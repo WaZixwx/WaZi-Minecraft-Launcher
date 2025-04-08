@@ -1,0 +1,325 @@
+/* 
+ * WaZi Minecraft Launcher 样式表
+ * WaZi Minecraft Launcher Stylesheet
+ * 
+ * 主样式表，定义启动器的整体样式
+ * Main stylesheet defining the overall styles of the launcher
+ * 
+ * @author WaZixwx
+ * @since 1.0.0
+ */
+
+/* 通用样式 - General Styles */
+.root {
+    -fx-font-family: "Microsoft YaHei", "Segoe UI", "Arial", sans-serif;
+    -fx-font-size: 13px;
+    -fx-background-radius: 2px;
+}
+
+/* 按钮样式 - Button Styles */
+.button {
+    -fx-background-color: rgba(255, 255, 255, 0.3);
+    -fx-text-fill: #333333;
+    -fx-background-radius: 2px;
+    -fx-border-radius: 2px;
+    -fx-padding: 8px 16px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0, 0, 1);
+    -fx-transition: all 0.2s ease-in-out;
+}
+
+.button:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.4);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 6, 0, 0, 2);
+}
+
+.button:pressed {
+    -fx-background-color: rgba(255, 255, 255, 0.5);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 2, 0, 0, 0);
+}
+
+/* 主按钮样式 - Primary Button Styles */
+.start-button, .button.primary {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+}
+
+.start-button:hover, .button.primary:hover {
+    -fx-background-color: #45a049;
+}
+
+.start-button:pressed, .button.primary:pressed {
+    -fx-background-color: #3d8b40;
+}
+
+/* 菜单按钮样式 - Menu Button Styles */
+.menu-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #333333;
+    -fx-alignment: center-left;
+    -fx-border-width: 0 0 0 3px;
+    -fx-border-color: transparent;
+}
+
+.menu-button:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.3);
+    -fx-border-color: #4CAF50;
+}
+
+.menu-button:pressed {
+    -fx-background-color: rgba(255, 255, 255, 0.4);
+}
+
+/* 登录按钮样式 - Login Button Styles */
+.login-button {
+    -fx-background-color: #2196F3;
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    -fx-padding: 5px 10px;
+}
+
+.login-button:hover {
+    -fx-background-color: #1976D2;
+}
+
+.login-button:pressed {
+    -fx-background-color: #0D47A1;
+}
+
+/* 窗口控制按钮样式 - Window Control Button Styles */
+.window-control-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #333333;
+    -fx-font-size: 14px;
+    -fx-padding: 2px 10px;
+    -fx-background-radius: 2px;
+    -fx-border-radius: 2px;
+}
+
+.window-control-button:hover {
+    -fx-background-color: rgba(0, 0, 0, 0.1);
+}
+
+.window-control-button:pressed {
+    -fx-background-color: rgba(0, 0, 0, 0.2);
+}
+
+/* 文本框样式 - Text Field Styles */
+.text-field, .password-field {
+    -fx-background-color: rgba(255, 255, 255, 0.7);
+    -fx-background-radius: 2px;
+    -fx-border-radius: 2px;
+    -fx-border-color: #CCCCCC;
+    -fx-border-width: 1px;
+    -fx-padding: 8px;
+}
+
+.text-field:focused, .password-field:focused {
+    -fx-background-color: rgba(255, 255, 255, 0.9);
+    -fx-border-color: #4CAF50;
+}
+
+/* 标签页样式 - Tab Pane Styles */
+.tab-pane {
+    -fx-background-color: transparent;
+}
+
+.tab-pane .tab-header-area {
+    -fx-padding: 5px 0 0 0;
+    -fx-background-color: transparent;
+}
+
+.tab-pane .tab-header-background {
+    -fx-background-color: transparent;
+}
+
+.tab-pane .tab {
+    -fx-background-color: rgba(255, 255, 255, 0.5);
+    -fx-background-radius: 2px 2px 0 0;
+    -fx-border-radius: 2px 2px 0 0;
+    -fx-padding: 8px 15px;
+}
+
+.tab-pane .tab:selected {
+    -fx-background-color: rgba(255, 255, 255, 0.8);
+}
+
+.tab-pane .tab-content-area {
+    -fx-background-color: transparent;
+}
+
+/* 滚动条样式 - Scroll Bar Styles */
+.scroll-bar {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar .thumb {
+    -fx-background-color: rgba(150, 150, 150, 0.6);
+    -fx-background-radius: 2px;
+}
+
+.scroll-bar .thumb:hover {
+    -fx-background-color: rgba(100, 100, 100, 0.8);
+}
+
+.scroll-bar .increment-button, .scroll-bar .decrement-button {
+    -fx-background-color: transparent;
+    -fx-padding: 2px;
+}
+
+.scroll-bar .track {
+    -fx-background-color: transparent;
+}
+
+/* 进度指示器样式 - Progress Indicator Styles */
+.progress-indicator {
+    -fx-progress-color: #4CAF50;
+}
+
+/* 超链接样式 - Hyperlink Styles */
+.hyperlink {
+    -fx-border-width: 0;
+    -fx-text-fill: #2196F3;
+}
+
+.hyperlink:hover {
+    -fx-text-fill: #0D47A1;
+    -fx-underline: true;
+}
+
+.hyperlink:visited {
+    -fx-text-fill: #9C27B0;
+}
+
+/* WebView样式 - WebView Styles */
+.web-view {
+    -fx-background-color: white;
+    -fx-background-radius: 2px;
+    -fx-border-radius: 2px;
+}
+
+/* 动画过渡样式 - Animation Transition Styles */
+.fade-transition {
+    -fx-duration: 200ms;
+}
+
+/* 全局样式 */
+* {
+    -fx-font-family: "Microsoft YaHei", "PingFang SC", "Helvetica Neue", Arial, sans-serif;
+}
+
+/* 列表视图样式 */
+.list-view {
+    -fx-background-color: rgba(255, 255, 255, 0.1);
+    -fx-background-radius: 2px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0, 0, 2);
+}
+
+.list-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: #333333;
+    -fx-padding: 8px;
+}
+
+.list-cell:selected {
+    -fx-background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* 标签样式 */
+.label {
+    -fx-text-fill: #333333;
+}
+
+/* 进度条样式 */
+.progress-bar {
+    -fx-background-color: rgba(255, 255, 255, 0.1);
+    -fx-background-radius: 2px;
+}
+
+.progress-bar .track {
+    -fx-background-color: rgba(255, 255, 255, 0.1);
+    -fx-background-radius: 2px;
+}
+
+.progress-bar .bar {
+    -fx-background-color: #4CAF50;
+    -fx-background-radius: 2px;
+}
+
+/* 卡片样式 */
+.card {
+    -fx-background-color: rgba(255, 255, 255, 0.2);
+    -fx-background-radius: 2px;
+    -fx-padding: 15px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0, 0, 2);
+}
+
+/* 分隔线样式 */
+.separator {
+    -fx-background-color: rgba(0, 0, 0, 0.1);
+}
+
+/* 复选框样式 */
+.check-box {
+    -fx-text-fill: #333333;
+}
+
+.check-box .box {
+    -fx-background-color: rgba(255, 255, 255, 0.2);
+    -fx-background-radius: 2px;
+    -fx-border-color: rgba(0, 0, 0, 0.2);
+    -fx-border-radius: 2px;
+}
+
+.check-box:selected .box {
+    -fx-background-color: #2196F3;
+    -fx-border-color: #2196F3;
+}
+
+/* 单选按钮样式 */
+.radio-button {
+    -fx-text-fill: #333333;
+}
+
+.radio-button .radio {
+    -fx-background-color: rgba(255, 255, 255, 0.2);
+    -fx-background-radius: 50%;
+    -fx-border-color: rgba(0, 0, 0, 0.2);
+    -fx-border-radius: 50%;
+}
+
+.radio-button:selected .radio {
+    -fx-background-color: #2196F3;
+    -fx-border-color: #2196F3;
+}
+
+/* 组合框样式 */
+.combo-box {
+    -fx-background-color: rgba(255, 255, 255, 0.2);
+    -fx-background-radius: 2px;
+}
+
+.combo-box .arrow-button {
+    -fx-background-color: transparent;
+}
+
+.combo-box .list-cell {
+    -fx-text-fill: #333333;
+}
+
+.combo-box .list-view {
+    -fx-background-color: rgba(255, 255, 255, 0.9);
+    -fx-background-radius: 2px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0, 0, 2);
+}
+
+/* 工具提示样式 */
+.tooltip {
+    -fx-background-color: rgba(0, 0, 0, 0.8);
+    -fx-text-fill: white;
+    -fx-background-radius: 2px;
+    -fx-padding: 5px;
+    -fx-font-size: 12px;
+} 

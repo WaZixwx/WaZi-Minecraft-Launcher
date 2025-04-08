@@ -1,0 +1,72 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.0.13'
+    id 'org.beryx.runtime' version '1.12.7'
+}
+
+group = 'com.wazixwx'
+version = '1.0.0'
+
+repositories {
+    mavenCentral()
+}
+
+javafx {
+    version = '17.0.2'
+    modules = ['javafx.controls', 'javafx.fxml', 'javafx.web']
+}
+
+dependencies {
+    implementation 'org.jetbrains:annotations:23.0.0'
+    implementation 'com.google.code.gson:gson:2.10.1'
+    implementation 'org.apache.commons:commons-lang3:3.12.0'
+    implementation 'commons-io:commons-io:2.11.0'
+    implementation 'org.slf4j:slf4j-api:1.7.36'
+    implementation 'ch.qos.logback:logback-classic:1.2.11'
+    
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
+}
+
+application {
+    mainClass = 'com.wazixwx.launcher.Main'
+}
+
+runtime {
+    options = ['--strip-native-commands', '--no-header-files', '--no-man-pages']
+    
+    launcher {
+        noConsole = true
+    }
+    
+    jpackage {
+        // Windows
+        if (org.gradle.internal.os.OperatingSystem.current().windows) {
+            imageOptions = ['--win-console']
+            installerOptions = ['--win-dir-chooser']
+        }
+        // macOS
+        else if (org.gradle.internal.os.OperatingSystem.current().macOsX) {
+            imageOptions = ['--mac-package-name', 'WaZi-Minecraft-Launcher']
+            installerOptions = ['--mac-package-identifier', 'com.wazixwx.launcher']
+        }
+        // Linux
+        else {
+            imageOptions = ['--linux-shortcut']
+            installerOptions = ['--linux-menu-group', 'Game']
+        }
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
+
+compileJava {
+    options.encoding = 'UTF-8'
+}
+
+tasks.withType(JavaCompile) {
+    options.compilerArgs += ['--enable-preview']
+} 
