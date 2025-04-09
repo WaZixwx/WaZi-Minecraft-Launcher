@@ -297,6 +297,23 @@ public class GameLauncher {
             args.add("--offline");
         }
         
+        // 添加服务器直连参数（如果有设置）
+        // Add direct server connection parameters (if set)
+        String serverAddress = configManager.getServerAddress();
+        if (serverAddress != null && !serverAddress.isEmpty()) {
+            args.add("--server");
+            args.add(serverAddress);
+            
+            int serverPort = configManager.getServerPort();
+            if (serverPort > 0) {
+                args.add("--port");
+                args.add(String.valueOf(serverPort));
+            }
+            
+            LogUtils.info("设置直连服务器: " + serverAddress + ":" + (serverPort > 0 ? serverPort : 25565) + 
+                " | Setting direct server connection: " + serverAddress + ":" + (serverPort > 0 ? serverPort : 25565));
+        }
+        
         return args;
     }
     
@@ -344,6 +361,15 @@ public class GameLauncher {
                     if (account == null) {
                         throw new RuntimeException("在线模式下未找到选中的账号 | No selected account found in online mode");
                     }
+                }
+                
+                // 记录服务器直连信息（如果有）
+                // Log direct server connection information (if any)
+                String serverAddress = configManager.getServerAddress();
+                if (serverAddress != null && !serverAddress.isEmpty()) {
+                    int serverPort = configManager.getServerPort();
+                    LogUtils.info("游戏将直接连接到服务器: " + serverAddress + ":" + (serverPort > 0 ? serverPort : 25565) + 
+                        " | Game will directly connect to server: " + serverAddress + ":" + (serverPort > 0 ? serverPort : 25565));
                 }
                 
                 // 调用launch方法启动游戏

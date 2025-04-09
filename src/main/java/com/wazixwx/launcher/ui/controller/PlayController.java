@@ -53,6 +53,9 @@ public class PlayController implements Initializable {
     @FXML private RadioButton offlineModeRadio;
     @FXML private ToggleGroup gameModeGroup;
     @FXML private TextField offlineUsernameField;
+    @FXML private CheckBox directServerCheckbox;
+    @FXML private TextField serverAddressField;
+    @FXML private TextField serverPortField;
     @FXML private Button launchButton;
     @FXML private TextArea launchLogArea;
     @FXML private ProgressBar launchProgressBar;
@@ -198,7 +201,17 @@ public class PlayController implements Initializable {
         });
         
         onlineModeRadio.setSelected(true);
-        offlineUsernameField.setDisable(true);
+        
+        // 设置服务器直连复选框监听器
+        // Set direct server connection checkbox listener
+        directServerCheckbox.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            serverAddressField.setDisable(!newValue);
+            serverPortField.setDisable(!newValue);
+        });
+        
+        // 初始化服务器端口默认值
+        // Initialize server port default value
+        serverPortField.setText("25565"); // Minecraft默认端口 | Minecraft default port
         
         // 设置版本下拉框选择监听器
         // Set version combobox selection listener
@@ -306,19 +319,31 @@ public class PlayController implements Initializable {
         fullscreenCheckbox.setSelected(fullscreen);
         resolutionComboBox.setDisable(fullscreen);
         
-        // 加载游戏模式设置
-        // Load game mode setting
-        boolean offlineMode = configManager.isOfflineMode();
-        if (offlineMode) {
+        // 设置游戏模式
+        // Set game mode
+        if (configManager.isOfflineMode()) {
             offlineModeRadio.setSelected(true);
+            offlineUsernameField.setDisable(false);
+            offlineUsernameField.setText(configManager.getOfflineUsername());
         } else {
             onlineModeRadio.setSelected(true);
+            offlineUsernameField.setDisable(true);
         }
         
-        // 加载离线用户名
-        // Load offline username
-        offlineUsernameField.setText(configManager.getOfflineUsername());
-        offlineUsernameField.setDisable(!offlineMode);
+        // 加载服务器直连设置
+        // Load direct server connection settings
+        boolean directServerConnection = (boolean) configManager.get("game.direct_server_connection", false);
+        directServerCheckbox.setSelected(directServerConnection);
+        
+        serverAddressField.setDisable(!directServerConnection);
+        serverPortField.setDisable(!directServerConnection);
+        
+        serverAddressField.setText(configManager.getServerAddress());
+        
+        // 如果端口是默认的25565，可以不显示
+        // If port is default 25565, it can be not displayed
+        int serverPort = configManager.getServerPort();
+        serverPortField.setText(serverPort == 25565 ? "" : String.valueOf(serverPort));
     }
 
     /**
@@ -644,7 +669,36 @@ public class PlayController implements Initializable {
             // Save offline mode settings
             configManager.setOfflineMode(offlineModeRadio.isSelected());
             if (offlineModeRadio.isSelected()) {
-                configManager.set("game.offline_username", offlineUsernameField.getText());
+                configManager.setOfflineUsername(offlineUsernameField.getText());
+            }
+            
+            // 保存服务器直连设置
+            // Save direct server connection settings
+            boolean directServerEnabled = directServerCheckbox.isSelected();
+            configManager.set("game.direct_server_connection", directServerEnabled);
+            
+            if (directServerEnabled) {
+                // 保存服务器地址
+                // Save server address
+                configManager.setServerAddress(serverAddressField.getText());
+                
+                // 保存服务器端口
+                // Save server port
+                try {
+                    String portText = serverPortField.getText().trim();
+                    int port = portText.isEmpty() ? 25565 : Integer.parseInt(portText);
+                    configManager.setServerPort(port);
+                } catch (NumberFormatException e) {
+                    // 如果端口不是有效的数字，使用默认端口(25565)
+                    // If port is not a valid number, use default port(25565)
+                    configManager.setServerPort(25565);
+                    serverPortField.setText("25565");
+                }
+            } else {
+                // 清空服务器直连设置
+                // Clear direct server connection settings
+                configManager.setServerAddress("");
+                configManager.setServerPort(25565);
             }
             
             // 保存所有配置

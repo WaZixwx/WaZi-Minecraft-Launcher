@@ -130,6 +130,17 @@
                         <Label text="离线用户名 | Offline Username:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
                         <TextField fx:id="offlineUsernameField" GridPane.columnIndex="1" GridPane.rowIndex="5" 
                                    disable="true" promptText="输入离线用户名 | Enter offline username" />
+                        
+                        <!-- 服务器直连 -->
+                        <!-- Direct server connection -->
+                        <Label text="服务器直连 | Direct Server:" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+                        <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                            <CheckBox fx:id="directServerCheckbox" text="直接连接到服务器 | Connect to server directly" />
+                            <HBox spacing="5">
+                                <TextField fx:id="serverAddressField" promptText="服务器地址 | Server address" disable="true" HBox.hgrow="ALWAYS" />
+                                <TextField fx:id="serverPortField" prefWidth="70" promptText="端口 | Port" disable="true" />
+                            </HBox>
+                        </VBox>
                     </GridPane>
                 </TitledPane>
                 

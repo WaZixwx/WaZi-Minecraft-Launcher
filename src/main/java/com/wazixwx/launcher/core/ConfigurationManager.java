@@ -48,6 +48,12 @@ public class ConfigurationManager {
     private static final String KEY_LAST_VERSION = "game.last_version";
     private static final String KEY_CUSTOM_JVM_ARGS = "game.custom_jvm_args";
     
+    // 服务器直连配置项
+    // Direct server connection configuration items
+    private static final String KEY_SERVER_ADDRESS = "game.server_address";
+    private static final String KEY_SERVER_PORT = "game.server_port";
+    private static final String KEY_DIRECT_SERVER_CONNECTION = "game.direct_server_connection";
+    
     // 窗口相关配置项
     // Window related configuration items
     private static final String KEY_AUTO_HIDE = "launcher.auto_hide";
@@ -177,6 +183,20 @@ public class ConfigurationManager {
         // Set launcher close after launch default value (disabled by default)
         if (!configMap.containsKey(KEY_CLOSE_AFTER_LAUNCH)) {
             configMap.put(KEY_CLOSE_AFTER_LAUNCH, false);
+        }
+        
+        // 设置服务器直连默认值
+        // Set direct server connection default values
+        if (!configMap.containsKey(KEY_SERVER_ADDRESS)) {
+            configMap.put(KEY_SERVER_ADDRESS, "");
+        }
+        
+        if (!configMap.containsKey(KEY_SERVER_PORT)) {
+            configMap.put(KEY_SERVER_PORT, 25565); // Minecraft默认端口 | Minecraft default port
+        }
+        
+        if (!configMap.containsKey(KEY_DIRECT_SERVER_CONNECTION)) {
+            configMap.put(KEY_DIRECT_SERVER_CONNECTION, false); // 默认不启用服务器直连 | Direct server connection disabled by default
         }
     }
     
@@ -345,6 +365,18 @@ public class ConfigurationManager {
     }
     
     /**
+     * 获取通用配置项，如果不存在则返回默认值
+     * Get general configuration item, return default value if not exists
+     * 
+     * @param key 配置键 | Configuration key
+     * @param defaultValue 默认值 | Default value
+     * @return 配置值 | Configuration value
+     */
+    public Object get(String key, Object defaultValue) {
+        return configMap.getOrDefault(key, defaultValue);
+    }
+    
+    /**
      * 设置通用配置项
      * Set general configuration item
      * 
@@ -476,5 +508,68 @@ public class ConfigurationManager {
      */
     public void setCloseAfterLaunch(boolean enabled) {
         configMap.put(KEY_CLOSE_AFTER_LAUNCH, enabled);
+    }
+    
+    /**
+     * 获取服务器地址
+     * Get server address
+     * 
+     * @return 服务器地址 | Server address
+     */
+    public String getServerAddress() {
+        return (String) configMap.getOrDefault(KEY_SERVER_ADDRESS, "");
+    }
+    
+    /**
+     * 设置服务器地址
+     * Set server address
+     * 
+     * @param address 服务器地址 | Server address
+     */
+    public void setServerAddress(String address) {
+        configMap.put(KEY_SERVER_ADDRESS, address);
+        save();
+    }
+    
+    /**
+     * 获取服务器端口
+     * Get server port
+     * 
+     * @return 服务器端口 | Server port
+     */
+    public int getServerPort() {
+        return ((Number) configMap.getOrDefault(KEY_SERVER_PORT, 25565)).intValue();
+    }
+    
+    /**
+     * 设置服务器端口
+     * Set server port
+     * 
+     * @param port 服务器端口 | Server port
+     */
+    public void setServerPort(int port) {
+        configMap.put(KEY_SERVER_PORT, port);
+        save();
+    }
+    
+    /**
+     * 获取服务器直连启用状态
+     * Get direct server connection enabled status
+     * 
+     * @return 是否启用服务器直连 | Whether direct server connection is enabled
+     */
+    public boolean isDirectServerConnectionEnabled() {
+        return (Boolean) configMap.getOrDefault(KEY_DIRECT_SERVER_CONNECTION, false);
+    }
+    
+    /**
+     * 设置服务器直连启用状态
+     * Set direct server connection enabled status
+     * 
+     * @param enabled 是否启用 | Whether to enable
+     */
+    public void setDirectServerConnectionEnabled(boolean enabled) {
+        configMap.put(KEY_DIRECT_SERVER_CONNECTION, enabled);
+        save();
     }
 } 
