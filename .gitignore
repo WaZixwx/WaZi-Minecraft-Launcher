@@ -1,30 +1,52 @@
-# Gradle
+# Gradle 相关 | Gradle Related
 .gradle/
 build/
 gradle-app.setting
 .gradletasknamecache
+out/
 
-# Allow gradle-wrapper.jar
+# gradle目录整体不应被忽略，只忽略特定文件 | Don't ignore entire gradle directory
+# 保留gradle-wrapper.jar | Allow gradle-wrapper.jar
+!gradle/wrapper/
 !gradle/wrapper/gradle-wrapper.jar
+# 但忽略其他gradle目录内容 | But ignore other gradle contents
+gradle/*
+!gradle/wrapper/
 
-# IDE
+# IDE 相关 | IDE Related
+## IntelliJ IDEA
 .idea/
 *.iml
 *.iws
 *.ipr
+## Eclipse
 .settings/
 .classpath
 .project
+.metadata/
+bin/
+## VS Code
 .vscode/
+## NetBeans
+nbproject/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
 
-# Compiled class files
+# 编译生成的文件 | Compiled Files
 *.class
+target/
+bin/
+build/
+dist/
 
-# Log files
+# 日志文件 | Log Files
 *.log
 logs/
+*.log.*
 
-# Package files
+# 打包文件 | Package Files
 *.jar
 *.war
 *.nar
@@ -32,14 +54,62 @@ logs/
 *.zip
 *.tar.gz
 *.rar
+*.tar
+*.7z
 
-# Virtual machine crash logs
+# JVM崩溃日志 | Virtual Machine Crash Logs
 hs_err_pid*
+replay_pid*
 
-# OS specific
+# 操作系统特定文件 | OS Specific Files
+## macOS
 .DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+## Windows
 Thumbs.db
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.lnk
+## Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
 
-# Application specific
+# 应用特定配置 | Application Specific
 config.json
-.minecraft/ 
+launcher_config.json
+.minecraft/
+cache/
+downloads/
+natives/
+assets/
+libraries/
+versions/
+skins/cache/
+resourcepacks/cache/
+screenshots/
+mods/cache/
+custom-jre/
+
+# 本地测试配置 | Local Test Configurations
+local.properties
+test-output/
+*.local
+*.private
+.env
+.env.local
+
+# 备份文件 | Backup Files
+*.bak
+*.backup
+*.old
+*.orig
+*.swp 

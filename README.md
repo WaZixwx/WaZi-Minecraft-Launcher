@@ -159,8 +159,8 @@ WaZi Minecraft Launcher is a cross-platform Minecraft launcher developed in Java
 
 1. 克隆仓库
 ```bash
-git clone https://github.com/WaZixwx/WaZi-Minecraft.git
-cd WaZi-Minecraft
+git clone https://github.com/WaZixwx/WaZi-Minecraft-Launcher.git
+cd WaZi-Minecraft-Launcher
 ```
 
 2. 安装依赖
@@ -176,6 +176,7 @@ cd WaZi-Minecraft
 ### 项目结构 | Project Structure
 
 ```
+gradle/
 src/
 ├── main/
 │   ├── java/
