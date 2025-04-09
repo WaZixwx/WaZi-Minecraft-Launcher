@@ -5,7 +5,7 @@ A modern, high-performance, cross-platform Minecraft launcher.
 
 [![许可证: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Java 17+](https://img.shields.io/badge/Java-17+-blue.svg)](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html)
-[![Gradle](https://img.shields.io/badge/Gradle-7.0+-blue.svg)](https://gradle.org/)
+[![Gradle](https://img.shields.io/badge/Gradle-6.8+-blue.svg)](https://gradle.org/)
 
 ## 项目概述 | Project Overview
 
