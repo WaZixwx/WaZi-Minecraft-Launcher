@@ -23,6 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 
 /**
  * 皮肤服务类
@@ -172,21 +174,11 @@ public class SkinService {
      * 
      * @param name 皮肤名称 | Skin name
      * @param type 皮肤类型 | Skin type (default/slim)
-     * @param skinFile 皮肤文件 | Skin file
+     * @param targetPath 皮肤文件路径 | Skin file path
      * @return 添加的皮肤 | Added skin
      * @throws IOException 如果文件操作失败 | If file operation fails
      */
-    public Skin addSkin(String name, String type, File skinFile) throws IOException {
-        // 确保皮肤目录存在
-        // Ensure skins directory exists
-        createSkinsDirectory();
-        
-        // 复制皮肤文件到皮肤目录
-        // Copy skin file to skins directory
-        String fileName = UUID.randomUUID().toString() + ".png";
-        Path targetPath = Paths.get(SKINS_DIR, fileName);
-        Files.copy(skinFile.toPath(), targetPath, StandardCopyOption.REPLACE_EXISTING);
-        
+    public Skin addSkin(String name, String type, Path targetPath) throws IOException {
         // 计算皮肤文件哈希
         // Calculate skin file hash
         String hash = calculateHash(targetPath);
@@ -207,13 +199,13 @@ public class SkinService {
     }
     
     /**
-     * 移除皮肤
-     * Remove skin
+     * 删除皮肤
+     * Delete skin
      * 
-     * @param skin 要移除的皮肤 | Skin to remove
-     * @return 是否成功移除 | Whether removal was successful
+     * @param skin 要删除的皮肤 | Skin to delete
+     * @return 是否成功删除 | Whether deletion was successful
      */
-    public boolean removeSkin(Skin skin) {
+    public boolean deleteSkin(Skin skin) {
         // 如果是选中的皮肤，则取消选中
         // If it's the selected skin, deselect it
         if (skin.equals(selectedSkin)) {
@@ -242,13 +234,14 @@ public class SkinService {
     }
     
     /**
-     * 选择皮肤
-     * Select skin
+     * 设置选中的皮肤
+     * Set selected skin
      * 
-     * @param skin 要选择的皮肤 | Skin to select
+     * @param skin 要选中的皮肤 | Skin to select
      */
-    public void selectSkin(Skin skin) {
+    public void setSelectedSkin(Skin skin) {
         this.selectedSkin = skin;
+        saveSkins();
     }
     
     /**
@@ -272,11 +265,11 @@ public class SkinService {
     }
     
     /**
-     * 根据类型获取皮肤
+     * 按类型获取皮肤
      * Get skins by type
      * 
-     * @param type 皮肤类型 | Skin type (default/slim)
-     * @return 皮肤列表 | Skin list
+     * @param type 皮肤类型 | Skin type
+     * @return 匹配类型的皮肤列表 | List of skins matching the type
      */
     public List<Skin> getSkinsByType(String type) {
         return skins.stream()
@@ -285,54 +278,117 @@ public class SkinService {
     }
     
     /**
-     * 验证皮肤是否有效
-     * Validate if skin is valid
+     * 验证皮肤文件
+     * Validate skin file
      * 
      * @param skinFile 皮肤文件 | Skin file
-     * @return 是否有效 | Whether valid
+     * @return 皮肤文件是否有效 | Whether skin file is valid
      */
     public boolean validateSkin(File skinFile) {
-        return SkinUtils.validateSkin(skinFile);
+        try {
+            if (!skinFile.exists() || !skinFile.isFile()) {
+                LogUtils.error("皮肤文件不存在或不是文件 | Skin file doesn't exist or is not a file");
+                return false;
+            }
+            
+            BufferedImage image = ImageIO.read(skinFile);
+            if (image == null) {
+                LogUtils.error("无法读取皮肤文件 | Cannot read skin file");
+                return false;
+            }
+            
+            int width = image.getWidth();
+            int height = image.getHeight();
+            
+            // Minecraft皮肤必须是64x64像素或64x32像素
+            // Minecraft skins must be 64x64 pixels or 64x32 pixels
+            boolean validDimensions = (width == 64 && (height == 64 || height == 32));
+            
+            if (!validDimensions) {
+                LogUtils.error("皮肤尺寸无效: " + width + "x" + height + 
+                        " | Invalid skin dimensions: " + width + "x" + height);
+            }
+            
+            return validDimensions;
+        } catch (IOException e) {
+            LogUtils.error("读取皮肤文件失败 | Failed to read skin file", e);
+            return false;
+        }
     }
     
     /**
-     * 获取皮肤类型
-     * Get skin type
+     * 确定皮肤类型
+     * Determine skin type
      * 
      * @param skinFile 皮肤文件 | Skin file
-     * @return 皮肤类型 | Skin type
+     * @return 皮肤类型 (default/slim) | Skin type (default/slim)
      */
-    public String getSkinType(File skinFile) {
-        return SkinUtils.determineSkinType(skinFile);
+    public String determineSkinType(File skinFile) {
+        try {
+            BufferedImage image = ImageIO.read(skinFile);
+            if (image == null) {
+                return "default"; // 默认为Steve模型 | Default to Steve model
+            }
+            
+            // 检查Alex模型特征（细手臂）
+            // Check for Alex model features (slim arms)
+            // 在64x64的皮肤中，检查手臂区域的透明度
+            // In a 64x64 skin, check transparency in the arm region
+            
+            // 如果是64x64的皮肤，检查左手臂区域
+            // If it's a 64x64 skin, check the left arm region
+            if (image.getHeight() == 64) {
+                boolean hasTransparency = false;
+                
+                // 检查左手臂区域的透明度
+                // Check transparency in the left arm region
+                for (int x = 32; x < 48; x++) {
+                    for (int y = 52; y < 64; y++) {
+                        int pixel = image.getRGB(x, y);
+                        int alpha = (pixel >> 24) & 0xff;
+                        if (alpha < 128) {
+                            hasTransparency = true;
+                            break;
+                        }
+                    }
+                    if (hasTransparency) break;
+                }
+                
+                // 如果有透明区域，可能是Alex模型
+                // If there's a transparency, it might be an Alex model
+                if (hasTransparency) {
+                    return "slim";
+                }
+            }
+            
+            // 默认为Steve模型
+            // Default to Steve model
+            return "default";
+        } catch (IOException e) {
+            LogUtils.error("确定皮肤类型失败 | Failed to determine skin type", e);
+            return "default"; // 默认为Steve模型 | Default to Steve model
+        }
     }
     
     /**
-     * 计算文件哈希值
+     * 计算文件哈希
      * Calculate file hash
      * 
      * @param path 文件路径 | File path
-     * @return 哈希值 | Hash value
+     * @return 文件哈希 | File hash
      */
     private String calculateHash(Path path) {
         try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] hash = digest.digest(Files.readAllBytes(path));
-            
-            // 将哈希值转换为十六进制字符串
-            // Convert hash to hex string
-            StringBuilder hexString = new StringBuilder();
-            for (byte b : hash) {
-                String hex = Integer.toHexString(0xff & b);
-                if (hex.length() == 1) {
-                    hexString.append('0');
-                }
-                hexString.append(hex);
+            MessageDigest md = MessageDigest.getInstance("SHA-1");
+            byte[] digest = md.digest(Files.readAllBytes(path));
+            StringBuilder sb = new StringBuilder();
+            for (byte b : digest) {
+                sb.append(String.format("%02x", b));
             }
-            
-            return hexString.toString();
+            return sb.toString();
         } catch (NoSuchAlgorithmException | IOException e) {
             LogUtils.error("计算文件哈希失败 | Failed to calculate file hash", e);
-            return "";
+            return UUID.randomUUID().toString(); // 失败时使用随机UUID | Use random UUID on failure
         }
     }
 } 

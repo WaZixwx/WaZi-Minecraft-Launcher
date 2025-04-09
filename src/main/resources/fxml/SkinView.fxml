@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.canvas.Canvas?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.wazixwx.launcher.ui.controller.SkinController"
+            stylesheets="/styles/main.css"
+            prefHeight="600.0" prefWidth="800.0">
+    
+    <!-- 顶部：标题和说明 -->
+    <!-- Top: Title and description -->
+    <top>
+        <VBox spacing="10">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+            
+            <Label text="皮肤管理 | Skin Management" styleClass="section-title">
+                <font>
+                    <Font name="System Bold" size="18.0"/>
+                </font>
+            </Label>
+            
+            <Label text="在这里管理您的Minecraft皮肤，离线模式下也可使用 | Manage your Minecraft skins here, also available in offline mode" />
+        </VBox>
+    </top>
+    
+    <!-- 中间：皮肤列表和预览区域 -->
+    <!-- Center: Skin list and preview area -->
+    <center>
+        <HBox spacing="20">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+            
+            <!-- 左侧：皮肤列表 -->
+            <!-- Left: Skin list -->
+            <VBox spacing="10" prefWidth="300" HBox.hgrow="ALWAYS">
+                <TitledPane text="皮肤列表 | Skin List" expanded="true" VBox.vgrow="ALWAYS">
+                    <ListView fx:id="skinListView" VBox.vgrow="ALWAYS" />
+                </TitledPane>
+                
+                <HBox spacing="10" alignment="CENTER">
+                    <Button fx:id="addSkinButton" text="添加皮肤 | Add Skin" />
+                    <Button fx:id="deleteSkinButton" text="删除皮肤 | Delete Skin" />
+                    <Button fx:id="applySkinButton" text="应用皮肤 | Apply Skin" styleClass="primary" />
+                </HBox>
+            </VBox>
+            
+            <!-- 右侧：皮肤预览 -->
+            <!-- Right: Skin preview -->
+            <VBox spacing="10" prefWidth="400" HBox.hgrow="ALWAYS">
+                <TitledPane text="皮肤预览 | Skin Preview" expanded="true" VBox.vgrow="ALWAYS">
+                    <BorderPane>
+                        <!-- 3D预览 -->
+                        <!-- 3D Preview -->
+                        <center>
+                            <StackPane fx:id="previewContainer" prefHeight="300" prefWidth="300" 
+                                       style="-fx-background-color: rgba(255,255,255,0.5); -fx-background-radius: 2px;">
+                                <Canvas fx:id="skinCanvas" width="300" height="300" />
+                            </StackPane>
+                        </center>
+                        
+                        <!-- 控制按钮 -->
+                        <!-- Control buttons -->
+                        <bottom>
+                            <HBox spacing="15" alignment="CENTER" BorderPane.alignment="CENTER">
+                                <padding>
+                                    <Insets top="10" right="0" bottom="0" left="0"/>
+                                </padding>
+                                
+                                <Button fx:id="rotateCcwButton" text="←" />
+                                <Button fx:id="rotateResetButton" text="重置 | Reset" />
+                                <Button fx:id="rotateCwButton" text="→" />
+                                <CheckBox fx:id="animateCheckbox" text="动画 | Animate" selected="true" />
+                            </HBox>
+                        </bottom>
+                    </BorderPane>
+                </TitledPane>
+                
+                <!-- 皮肤信息 -->
+                <!-- Skin information -->
+                <TitledPane text="皮肤信息 | Skin Information" expanded="true">
+                    <GridPane hgap="10" vgap="10">
+                        <columnConstraints>
+                            <ColumnConstraints hgrow="NEVER" minWidth="100" />
+                            <ColumnConstraints hgrow="ALWAYS" />
+                        </columnConstraints>
+                        
+                        <Label text="名称 | Name:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                        <Label fx:id="skinNameLabel" text="" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                        
+                        <Label text="类型 | Type:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <Label fx:id="skinTypeLabel" text="" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        
+                        <Label text="文件 | File:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                        <Label fx:id="skinFileLabel" text="" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        
+                        <Label text="大小 | Size:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                        <Label fx:id="skinSizeLabel" text="" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                    </GridPane>
+                </TitledPane>
+            </VBox>
+        </HBox>
+    </center>
+    
+    <!-- 底部：状态栏 -->
+    <!-- Bottom: Status bar -->
+    <bottom>
+        <HBox spacing="10" alignment="CENTER_LEFT">
+            <padding>
+                <Insets top="5" right="10" bottom="10" left="10"/>
+            </padding>
+            
+            <Label fx:id="statusLabel" text="就绪 | Ready" />
+        </HBox>
+    </bottom>
+</BorderPane> 

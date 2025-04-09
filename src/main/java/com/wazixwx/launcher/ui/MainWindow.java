@@ -648,8 +648,26 @@ public class MainWindow {
      * Show skins management page
      */
     private void showSkinsPage() {
-        // TODO: 实现皮肤管理页面
-        LogUtils.info("显示皮肤管理页面");
+        try {
+            LogUtils.info("显示皮肤管理页面 | Showing skins management page");
+            
+            // 加载皮肤管理视图
+            // Load skins management view
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/SkinView.fxml"));
+            Parent skinView = loader.load();
+            
+            // 设置内容区域
+            // Set content area
+            contentArea.getChildren().clear();
+            contentArea.getChildren().add(skinView);
+            
+            // 应用过渡动画
+            // Apply transition animation
+            AnimationUtils.applyFadeInTransition(skinView);
+        } catch (Exception e) {
+            LogUtils.error("加载皮肤管理页面失败 | Failed to load skins management page", e);
+            showErrorAlert("加载页面失败 | Failed to load page", e.getMessage());
+        }
     }
     
     /**
