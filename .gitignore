@@ -6,12 +6,12 @@ gradle-app.setting
 out/
 
 # gradle目录整体不应被忽略，只忽略特定文件 | Don't ignore entire gradle directory
-# 保留gradle-wrapper.jar | Allow gradle-wrapper.jar
-!gradle/wrapper/
-!gradle/wrapper/gradle-wrapper.jar
 # 但忽略其他gradle目录内容 | But ignore other gradle contents
 gradle/*
+# 保留gradle-wrapper目录和jar | Allow gradle-wrapper directory and jar
 !gradle/wrapper/
+!gradle/wrapper/gradle-wrapper.jar
+!gradle/wrapper/gradle-wrapper.properties
 
 # IDE 相关 | IDE Related
 ## IntelliJ IDEA
@@ -56,6 +56,8 @@ logs/
 *.rar
 *.tar
 *.7z
+# 排除Gradle Wrapper JAR | Exclude Gradle Wrapper JAR
+!gradle/wrapper/gradle-wrapper.jar
 
 # JVM崩溃日志 | Virtual Machine Crash Logs
 hs_err_pid*
