@@ -186,4 +186,19 @@ public class AnimationUtils {
             node.setEffect(null);
         }
     }
+    
+    /**
+     * 应用淡入过渡动画
+     * Apply fade in transition animation
+     * 
+     * @param node 要添加动画的节点 Node to animate
+     */
+    public static void applyFadeInTransition(Node node) {
+        node.setOpacity(0);
+        FadeTransition fadeTransition = new FadeTransition(Duration.millis(300), node);
+        fadeTransition.setFromValue(0.0);
+        fadeTransition.setToValue(1.0);
+        fadeTransition.setInterpolator(Interpolator.EASE_OUT);
+        fadeTransition.play();
+    }
 } 

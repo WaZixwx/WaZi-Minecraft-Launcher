@@ -60,6 +60,18 @@ public class MainWindow {
     private Button loginButton;
     private ImageView avatarView;
     
+    // 导航按钮
+    // Navigation buttons
+    private Button playButton;
+    private Button versionsButton;
+    private Button modsButton;
+    private Button skinsButton;
+    private Button settingsButton;
+    
+    // 当前页面
+    // Current page
+    private String currentPage = "welcome";
+    
     /**
      * 构造函数
      * Constructor
@@ -197,11 +209,11 @@ public class MainWindow {
         sidebar.getChildren().add(userInfo);
         
         // 添加菜单按钮
-        Button playButton = createMenuButton("开始游戏", "play");
-        Button versionsButton = createMenuButton("版本管理", "versions");
-        Button modsButton = createMenuButton("模组管理", "mods");
-        Button skinsButton = createMenuButton("皮肤管理", "skins");
-        Button settingsButton = createMenuButton("设置", "settings");
+        playButton = createMenuButton("开始游戏", "play");
+        versionsButton = createMenuButton("版本管理", "versions");
+        modsButton = createMenuButton("模组管理", "mods");
+        skinsButton = createMenuButton("皮肤管理", "skins");
+        settingsButton = createMenuButton("设置", "settings");
         
         // 设置按钮点击事件
         playButton.setOnAction(e -> showPlayPage());
@@ -569,7 +581,7 @@ public class MainWindow {
             
         } catch (IOException e) {
             LogUtils.error("加载游戏启动页面失败 | Failed to load game launch page", e);
-            showAlert(AlertType.ERROR, "错误 | Error", 
+            showAlert(Alert.AlertType.ERROR, "错误 | Error", 
                     "加载游戏启动页面失败 | Failed to load game launch page", 
                     e.getMessage());
         }
@@ -675,8 +687,95 @@ public class MainWindow {
      * Show settings page
      */
     private void showSettingsPage() {
-        // TODO: 实现设置页面
-        LogUtils.info("显示设置页面");
+        try {
+            LogUtils.info("显示设置页面 | Showing settings page");
+            
+            // 加载设置页面FXML
+            // Load settings page FXML
+            URL fxmlUrl = getClass().getResource("/fxml/SettingsView.fxml");
+            if (fxmlUrl == null) {
+                LogUtils.error("无法找到设置页面FXML | Cannot find settings page FXML");
+                return;
+            }
+            
+            // 加载FXML
+            // Load FXML
+            FXMLLoader loader = new FXMLLoader(fxmlUrl);
+            Parent settingsView = loader.load();
+            
+            // 清除内容区域并添加设置页面
+            // Clear content area and add settings page
+            contentArea.getChildren().clear();
+            contentArea.getChildren().add(settingsView);
+            
+            // 设置当前页面
+            // Set current page
+            currentPage = "settings";
+            
+            // 更新导航栏选中状态
+            // Update navigation bar selection state
+            updateNavSelection(settingsButton);
+            
+            // 使用动画显示内容
+            // Show content with animation
+            AnimationUtils.fadeIn(settingsView, 300);
+            
+        } catch (Exception e) {
+            LogUtils.error("加载设置页面失败 | Failed to load settings page", e);
+            showErrorAlert("加载页面失败 | Failed to load page", e.getMessage());
+        }
+    }
+    
+    /**
+     * 更新导航栏按钮选中状态
+     * Update navigation bar button selection state
+     * 
+     * @param selectedButton 选中的按钮 | Selected button
+     */
+    private void updateNavSelection(Button selectedButton) {
+        // 重置所有按钮样式
+        // Reset all button styles
+        playButton.getStyleClass().remove("menu-button-selected");
+        versionsButton.getStyleClass().remove("menu-button-selected");
+        modsButton.getStyleClass().remove("menu-button-selected");
+        skinsButton.getStyleClass().remove("menu-button-selected");
+        settingsButton.getStyleClass().remove("menu-button-selected");
+        
+        // 添加选中样式
+        // Add selected style
+        selectedButton.getStyleClass().add("menu-button-selected");
+    }
+    
+    /**
+     * 显示错误提示框
+     * Show error alert
+     * 
+     * @param title 标题 | Title
+     * @param message 错误信息 | Error message
+     */
+    private void showErrorAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+    
+    /**
+     * 显示提示框
+     * Show alert
+     * 
+     * @param type 提示框类型 | Alert type
+     * @param title 标题 | Title
+     * @param header 头部信息 | Header
+     * @param message 消息内容 | Message
+     */
+    private void showAlert(Alert.AlertType type, String title, String header, String message) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
     
     /**

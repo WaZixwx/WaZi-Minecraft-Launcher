@@ -72,6 +72,14 @@
     -fx-background-color: rgba(255, 255, 255, 0.4);
 }
 
+/* 选中的菜单按钮样式 - Selected Menu Button Styles */
+.menu-button-selected {
+    -fx-background-color: rgba(255, 255, 255, 0.3);
+    -fx-border-color: #4CAF50;
+    -fx-border-width: 0 0 0 3px;
+    -fx-font-weight: bold;
+}
+
 /* 登录按钮样式 - Login Button Styles */
 .login-button {
     -fx-background-color: #2196F3;

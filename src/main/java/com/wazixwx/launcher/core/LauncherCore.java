@@ -20,6 +20,12 @@ import java.util.concurrent.CompletableFuture;
  * @since 1.0.0
  */
 public class LauncherCore {
+    /**
+     * 启动器版本号
+     * Launcher version
+     */
+    public static final String VERSION = "1.0.0";
+    
     private static LauncherCore instance;
     private final ConfigurationManager configManager;
     private final VersionManager versionManager;
