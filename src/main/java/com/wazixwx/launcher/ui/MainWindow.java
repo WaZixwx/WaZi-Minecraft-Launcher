@@ -42,8 +42,9 @@ import java.io.InputStream;
 public class MainWindow {
     private static final String MS_CLIENT_ID = "389b1b32-b5d5-43b2-bddc-84ce938d6737";
     
-    private final Stage stage;
-    private final BorderPane root;
+    private Stage primaryStage;
+    private Scene scene;
+    private BorderPane root;
     private final VBox sidebar;
     private final StackPane contentArea;
     private final HBox topBar;
@@ -59,14 +60,24 @@ public class MainWindow {
     /**
      * 构造函数
      * Constructor
+     * 
+     * @param primaryStage 主舞台 | Primary stage
      */
-    public MainWindow() {
+    public MainWindow(Stage primaryStage) {
+        this.primaryStage = primaryStage;
+        initialize();
+    }
+    
+    /**
+     * 初始化界面
+     * Initialize interface
+     */
+    private void initialize() {
         // 初始化服务
         this.accountService = new AccountService();
         this.authService = new AuthService(accountService, MS_CLIENT_ID);
         
         // 初始化界面
-        stage = new Stage(StageStyle.TRANSPARENT);
         root = new BorderPane();
         
         // 设置毛玻璃效果
@@ -78,7 +89,7 @@ public class MainWindow {
         root.setStyle("-fx-background-color: rgba(255, 255, 255, 0.7);");
         
         // 创建场景
-        Scene scene = new Scene(root, 1280, 720);
+        scene = new Scene(root, 1280, 720);
         scene.setFill(Color.TRANSPARENT);
         
         // 加载样式表
@@ -89,8 +100,8 @@ public class MainWindow {
         }
         
         // 设置窗口属性
-        stage.setScene(scene);
-        stage.setTitle("WaZi Minecraft Launcher");
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("WaZi Minecraft Launcher");
         
         // 初始化UI组件
         initializeUI();
@@ -149,7 +160,7 @@ public class MainWindow {
         
         Button minimizeButton = new Button("—");
         minimizeButton.getStyleClass().add("window-control-button");
-        minimizeButton.setOnAction(e -> stage.setIconified(true));
+        minimizeButton.setOnAction(e -> primaryStage.setIconified(true));
         
         Button closeButton = new Button("×");
         closeButton.getStyleClass().add("window-control-button");
@@ -414,8 +425,8 @@ public class MainWindow {
         });
         
         scene.setOnMouseDragged(e -> {
-            stage.setX(e.getScreenX() - xOffset[0]);
-            stage.setY(e.getScreenY() - yOffset[0]);
+            primaryStage.setX(e.getScreenX() - xOffset[0]);
+            primaryStage.setY(e.getScreenY() - yOffset[0]);
         });
     }
     
@@ -574,6 +585,6 @@ public class MainWindow {
      * Show window
      */
     public void show() {
-        stage.show();
+        primaryStage.show();
     }
 } 

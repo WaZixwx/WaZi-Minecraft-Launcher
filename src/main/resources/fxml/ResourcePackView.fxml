@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane stylesheets="@../styles/main.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wazixwx.launcher.ui.controller.ResourcePackController">
+   <children>
+      <BorderPane prefHeight="600.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <top>
+            <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="card" BorderPane.alignment="CENTER">
+               <children>
+                  <Label text="资源包管理 | Resource Packs Management">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Label>
+               </children>
+               <padding>
+                  <Insets bottom="10.0" left="15.0" right="15.0" top="10.0" />
+               </padding>
+            </HBox>
+         </top>
+         <left>
+            <VBox prefWidth="350.0" spacing="10.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Label text="可用资源包 | Available Resource Packs">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <TableView fx:id="availablePacksTable" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                  <HBox alignment="CENTER_LEFT" spacing="10.0">
+                     <children>
+                        <Button fx:id="addPackButton" mnemonicParsing="false" styleClass="button,primary" text="添加 | Add" />
+                        <Button fx:id="removePackButton" mnemonicParsing="false" text="移除 | Remove" />
+                        <Button fx:id="enablePackButton" mnemonicParsing="false" text="启用 | Enable" />
+                     </children>
+                  </HBox>
+                  <Label text="已启用资源包 | Enabled Resource Packs">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <TableView fx:id="enabledPacksTable" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                  <HBox alignment="CENTER_LEFT" spacing="10.0">
+                     <children>
+                        <Button fx:id="moveUpButton" mnemonicParsing="false" text="上移 | Move Up" />
+                        <Button fx:id="moveDownButton" mnemonicParsing="false" text="下移 | Move Down" />
+                        <Button fx:id="disablePackButton" mnemonicParsing="false" text="禁用 | Disable" />
+                     </children>
+                  </HBox>
+               </children>
+               <BorderPane.margin>
+                  <Insets />
+               </BorderPane.margin>
+               <padding>
+                  <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+               </padding>
+            </VBox>
+         </left>
+         <center>
+            <Pane fx:id="detailsPane" prefHeight="200.0" prefWidth="200.0" styleClass="card" BorderPane.alignment="CENTER">
+               <children>
+                  <VBox alignment="TOP_CENTER" layoutX="47.0" layoutY="82.0" prefHeight="386.0" prefWidth="326.0" spacing="15.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <Label text="资源包详情 | Resource Pack Details">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                        </Label>
+                        <ImageView fx:id="packIconView" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" />
+                        <Label fx:id="packNameLabel" styleClass="title-label" text="选择一个资源包 | Select a resource pack">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="packVersionLabel" text="版本 | Version: ">
+                           <font>
+                              <Font size="12.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="packDescriptionLabel" alignment="TOP_LEFT" prefHeight="150.0" text="资源包描述 | Resource pack description" wrapText="true" VBox.vgrow="ALWAYS">
+                           <font>
+                              <Font size="12.0" />
+                           </font>
+                        </Label>
+                     </children>
+                     <padding>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                     </padding>
+                  </VBox>
+               </children>
+               <BorderPane.margin>
+                  <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+               </BorderPane.margin>
+            </Pane>
+         </center>
+      </BorderPane>
+   </children>
+</AnchorPane> 
