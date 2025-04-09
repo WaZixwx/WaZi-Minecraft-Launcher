@@ -2,8 +2,10 @@
 .gradle/
 build/
 gradle-app.setting
-!gradle-wrapper.jar
 .gradletasknamecache
+
+# Allow gradle-wrapper.jar
+!gradle/wrapper/gradle-wrapper.jar
 
 # IDE
 .idea/
