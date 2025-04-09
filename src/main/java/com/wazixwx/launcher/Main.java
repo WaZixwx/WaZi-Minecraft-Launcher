@@ -35,6 +35,9 @@ public class Main extends Application {
                     // Create and show main window
                     Platform.runLater(() -> {
                         MainWindow mainWindow = new MainWindow(primaryStage);
+                        // 将主窗口实例保存到LauncherCore中
+                        // Save main window instance to LauncherCore
+                        LauncherCore.getInstance().setMainWindow(mainWindow);
                         mainWindow.show();
                     });
                 })

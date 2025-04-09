@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.wazixwx.launcher.ui.controller.PlayController"
+            stylesheets="/styles/main.css"
+            prefHeight="600.0" prefWidth="800.0">
+    
+    <!-- 顶部：标题和状态 -->
+    <!-- Top: Title and status -->
+    <top>
+        <VBox spacing="10">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+            
+            <Label text="开始游戏 | Play Game" styleClass="section-title">
+                <font>
+                    <Font name="System Bold" size="18.0"/>
+                </font>
+            </Label>
+            
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label text="游戏状态 | Game Status:" />
+                <Label fx:id="statusLabel" text="就绪 | Ready" />
+            </HBox>
+        </VBox>
+    </top>
+    
+    <!-- 中间：游戏启动设置 -->
+    <!-- Center: Game launch settings -->
+    <center>
+        <HBox spacing="20">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+            
+            <!-- 左侧：版本选择和设置 -->
+            <!-- Left: Version selection and settings -->
+            <VBox spacing="15" HBox.hgrow="ALWAYS" prefWidth="500">
+                <!-- 版本选择 -->
+                <!-- Version selection -->
+                <TitledPane text="版本选择 | Version Selection" expanded="true">
+                    <VBox spacing="10">
+                        <HBox spacing="10" alignment="CENTER_LEFT">
+                            <Label text="当前版本 | Current Version:" />
+                            <ComboBox fx:id="versionComboBox" prefWidth="300" />
+                            <Button fx:id="refreshVersionsButton" text="刷新 | Refresh" />
+                        </HBox>
+                        
+                        <Label fx:id="versionInfoLabel" text="" />
+                    </VBox>
+                </TitledPane>
+                
+                <!-- 启动参数设置 -->
+                <!-- Launch parameters -->
+                <TitledPane text="启动参数 | Launch Parameters" expanded="true">
+                    <GridPane hgap="10" vgap="10">
+                        <columnConstraints>
+                            <ColumnConstraints hgrow="NEVER" minWidth="150" />
+                            <ColumnConstraints hgrow="ALWAYS" />
+                        </columnConstraints>
+                        
+                        <!-- 内存设置 -->
+                        <!-- Memory settings -->
+                        <Label text="最大内存 | Max Memory:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                        <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                            <HBox spacing="5" alignment="CENTER_LEFT">
+                                <Slider fx:id="memorySlider" min="1024" max="8192" value="2048" 
+                                        showTickLabels="true" showTickMarks="true" majorTickUnit="1024" 
+                                        minorTickCount="1" snapToTicks="true" blockIncrement="1024" 
+                                        HBox.hgrow="ALWAYS" />
+                                <Label fx:id="memoryValueLabel" text="2048 MB" minWidth="70" />
+                            </HBox>
+                            <HBox spacing="5" alignment="CENTER_LEFT">
+                                <CheckBox fx:id="autoMemoryCheckBox" text="系统自适应内存分配 | Auto Memory Allocation" />
+                            </HBox>
+                            <HBox spacing="5" alignment="CENTER_LEFT">
+                                <Label fx:id="systemMemoryLabel" text="系统内存：未知 | System Memory: Unknown" styleClass="memory-info-label" />
+                            </HBox>
+                            <HBox spacing="5" alignment="CENTER_LEFT">
+                                <ProgressBar fx:id="memoryUsageBar" progress="0.25" prefWidth="200" />
+                                <Label fx:id="memoryPercentLabel" text="25%" minWidth="40" />
+                            </HBox>
+                        </VBox>
+                        
+                        <!-- Java参数 -->
+                        <!-- Java arguments -->
+                        <Label text="Java 路径 | Java Path:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <HBox spacing="5" alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                            <TextField fx:id="javaPathField" HBox.hgrow="ALWAYS" promptText="自动 | Auto" />
+                            <Button fx:id="browseJavaButton" text="浏览 | Browse" />
+                        </HBox>
+                        
+                        <!-- JVM参数 -->
+                        <!-- JVM arguments -->
+                        <Label text="JVM 参数 | JVM Args:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                        <TextField fx:id="jvmArgsField" GridPane.columnIndex="1" GridPane.rowIndex="2" 
+                                   promptText="-XX:+UseG1GC -XX:+UnlockExperimentalVMOptions" />
+                        
+                        <!-- 游戏分辨率 -->
+                        <!-- Game resolution -->
+                        <Label text="游戏分辨率 | Resolution:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                        <HBox spacing="5" alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                            <ComboBox fx:id="resolutionComboBox" prefWidth="150" />
+                            <CheckBox fx:id="fullscreenCheckbox" text="全屏 | Fullscreen" />
+                        </HBox>
+                        
+                        <!-- 离线模式设置 -->
+                        <!-- Offline mode settings -->
+                        <Label text="游戏模式 | Game Mode:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                        <HBox spacing="10" alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                            <RadioButton fx:id="onlineModeRadio" text="在线模式 | Online Mode" selected="true">
+                                <toggleGroup>
+                                    <ToggleGroup fx:id="gameModeGroup" />
+                                </toggleGroup>
+                            </RadioButton>
+                            <RadioButton fx:id="offlineModeRadio" text="离线模式 | Offline Mode" toggleGroup="$gameModeGroup" />
+                        </HBox>
+                        
+                        <!-- 离线用户名 -->
+                        <!-- Offline username -->
+                        <Label text="离线用户名 | Offline Username:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                        <TextField fx:id="offlineUsernameField" GridPane.columnIndex="1" GridPane.rowIndex="5" 
+                                   disable="true" promptText="输入离线用户名 | Enter offline username" />
+                    </GridPane>
+                </TitledPane>
+                
+                <!-- 启动按钮 -->
+                <!-- Launch button -->
+                <HBox alignment="CENTER">
+                    <Button fx:id="launchButton" text="启动游戏 | Launch Game" styleClass="start-button" 
+                            prefWidth="200" prefHeight="50">
+                        <font>
+                            <Font name="System Bold" size="16.0" />
+                        </font>
+                    </Button>
+                </HBox>
+            </VBox>
+            
+            <!-- 右侧：版本信息和启动日志 -->
+            <!-- Right: Version information and launch log -->
+            <VBox spacing="15" prefWidth="250">
+                <!-- 版本图片 -->
+                <!-- Version image -->
+                <ImageView fx:id="versionImageView" fitWidth="250" fitHeight="140" preserveRatio="true" />
+                
+                <!-- 启动日志 -->
+                <!-- Launch log -->
+                <TitledPane text="启动日志 | Launch Log" VBox.vgrow="ALWAYS" expanded="true">
+                    <TextArea fx:id="launchLogArea" editable="false" wrapText="true" VBox.vgrow="ALWAYS" />
+                </TitledPane>
+            </VBox>
+        </HBox>
+    </center>
+    
+    <!-- 底部：进度条 -->
+    <!-- Bottom: Progress bar -->
+    <bottom>
+        <VBox spacing="5">
+            <padding>
+                <Insets top="5" right="10" bottom="10" left="10"/>
+            </padding>
+            
+            <ProgressBar fx:id="launchProgressBar" progress="0.0" prefWidth="Infinity" visible="false" />
+            <Label fx:id="progressLabel" text="" visible="false" />
+        </VBox>
+    </bottom>
+</BorderPane> 

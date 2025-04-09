@@ -6,8 +6,9 @@ import com.wazixwx.launcher.model.VersionMetadata;
 import com.wazixwx.launcher.service.SkinService;
 import com.wazixwx.launcher.utils.LogUtils;
 
-import java.io.File;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
@@ -16,6 +17,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import javafx.application.Platform;
 
 /**
  * 游戏启动器类
@@ -44,55 +46,70 @@ public class GameLauncher {
      * 启动游戏
      * Launch the game
      * 
-     * @param version 游戏版本 | Game version
-     * @param account 玩家账号（可选，离线模式下为null）| Player account (optional, null in offline mode)
-     * @return CompletableFuture<Process> 游戏进程 | Game process
+     * @param version 版本元数据 | Version metadata
+     * @param account 用户账号 | User account
+     * @return 游戏进程的CompletableFuture | CompletableFuture of the game process
      */
     public CompletableFuture<Process> launch(VersionMetadata version, Account account) {
         return CompletableFuture.supplyAsync(() -> {
             try {
-                // 如果是离线模式，处理皮肤
-                // If in offline mode, handle skin
-                if (configManager.isOfflineMode()) {
+                // 记录游戏启动信息
+                // Log game launch information
+                LogUtils.info("正在启动Minecraft | Launching Minecraft: " + version.getId());
+                
+                // 如果是离线模式，准备皮肤
+                // If in offline mode, prepare skin
+                if (LauncherCore.getInstance().getConfigManager().isOfflineMode()) {
                     prepareSkin();
                 }
                 
                 // 构建启动命令
                 // Build launch command
-                List<String> commands = buildLaunchCommand(version, account);
+                List<String> command = buildLaunchCommand(version, account);
+                LogUtils.info("启动命令 | Launch command: " + String.join(" ", command));
                 
-                // 创建进程构建器
-                // Create process builder
-                ProcessBuilder processBuilder = new ProcessBuilder(commands);
-                
-                // 设置工作目录
-                // Set working directory
-                processBuilder.directory(configManager.getMinecraftDirectory().toFile());
-                
-                // 合并标准输出和错误输出
-                // Merge standard output and error output
-                processBuilder.redirectErrorStream(true);
-                
-                // 添加自定义JVM参数
-                // Add custom JVM arguments
-                String customJvmArgs = configManager.getCustomJvmArgs();
-                if (!customJvmArgs.isEmpty()) {
-                    commands.addAll(Arrays.asList(customJvmArgs.split(" ")));
-                }
-                
-                // 启动进程
-                // Start process
+                // 启动游戏进程
+                // Start game process
+                ProcessBuilder processBuilder = new ProcessBuilder(command);
+                processBuilder.directory(version.getGameDirectory().toFile());
                 Process process = processBuilder.start();
                 
-                // 记录启动信息
-                // Log launch information
-                LogUtils.info("游戏已启动 | Game launched: " + version.getId() + 
-                    (configManager.isOfflineMode() ? " (离线模式 | Offline mode)" : ""));
+                // 记录游戏日志
+                // Log game output
+                logGameOutput(process);
+                
+                // 监控游戏进程状态
+                // Monitor game process status
+                monitorGameProcess(process);
+                
+                // 检查是否需要自动隐藏启动器
+                // Check if launcher should be auto-hidden
+                if (LauncherCore.getInstance().getConfigManager().isAutoHideEnabled()) {
+                    LogUtils.info("自动隐藏启动器 | Auto-hiding launcher");
+                    LauncherCore.getInstance().hideWindow();
+                }
+                
+                // 检查是否需要关闭启动器
+                // Check if launcher should be closed
+                if (LauncherCore.getInstance().getConfigManager().isCloseAfterLaunch()) {
+                    LogUtils.info("游戏启动后关闭启动器 | Closing launcher after game launch");
+                    Platform.runLater(() -> {
+                        // 延迟一秒后关闭，确保游戏已经正常启动
+                        // Delay 1 second to ensure game has started properly
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            Thread.currentThread().interrupt();
+                        }
+                        Platform.exit();
+                    });
+                }
                 
                 return process;
-            } catch (IOException e) {
+                
+            } catch (Exception e) {
                 LogUtils.error("启动游戏失败 | Failed to launch game", e);
-                throw new RuntimeException("启动游戏失败 | Failed to launch game", e);
+                throw new RuntimeException(e);
             }
         });
     }
@@ -296,5 +313,120 @@ public class GameLauncher {
          * @param progress 进度(0-100) | Progress(0-100)
          */
         void onProgressUpdate(String status, int progress);
+    }
+    
+    /**
+     * 启动指定版本的游戏
+     * Launch game with specified version
+     * 
+     * @param versionId 版本ID | Version ID
+     * @return CompletableFuture<Process> 游戏进程 | Game process
+     */
+    public CompletableFuture<Process> launchGame(String versionId) {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                LogUtils.info("准备启动游戏: " + versionId + " | Preparing to launch game: " + versionId);
+                
+                // 获取版本信息
+                // Get version information
+                VersionMetadata version = LauncherCore.getInstance().getVersionManager()
+                        .getAllVersions().get()
+                        .stream()
+                        .filter(v -> v.getId().equals(versionId))
+                        .findFirst()
+                        .orElseThrow(() -> new RuntimeException("找不到版本: " + versionId + " | Version not found: " + versionId));
+                
+                // 获取账号信息（如果是在线模式）
+                // Get account information (if in online mode)
+                Account account = null;
+                if (!configManager.isOfflineMode()) {
+                    account = LauncherCore.getInstance().getAccountService().getSelectedAccount();
+                    if (account == null) {
+                        throw new RuntimeException("在线模式下未找到选中的账号 | No selected account found in online mode");
+                    }
+                }
+                
+                // 调用launch方法启动游戏
+                // Call launch method to start the game
+                return launch(version, account).get();
+            } catch (Exception e) {
+                LogUtils.error("启动游戏失败: " + versionId + " | Failed to launch game: " + versionId, e);
+                throw new RuntimeException("启动游戏失败 | Failed to launch game", e);
+            }
+        });
+    }
+    
+    /**
+     * 记录游戏输出
+     * Log game output
+     * 
+     * @param process 游戏进程 | Game process
+     */
+    private void logGameOutput(Process process) {
+        // 创建线程处理游戏输出
+        // Create thread to handle game output
+        Thread outputThread = new Thread(() -> {
+            try (BufferedReader reader = new BufferedReader(
+                     new InputStreamReader(process.getInputStream(), "UTF-8"))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    LogUtils.debug("游戏输出 | Game output: " + line);
+                }
+            } catch (IOException e) {
+                LogUtils.error("读取游戏输出失败 | Failed to read game output", e);
+            }
+        });
+        outputThread.setDaemon(true);
+        outputThread.start();
+        
+        // 创建线程处理游戏错误输出
+        // Create thread to handle game error output
+        Thread errorThread = new Thread(() -> {
+            try (BufferedReader reader = new BufferedReader(
+                     new InputStreamReader(process.getErrorStream(), "UTF-8"))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    LogUtils.error("游戏错误输出 | Game error output: " + line);
+                }
+            } catch (IOException e) {
+                LogUtils.error("读取游戏错误输出失败 | Failed to read game error output", e);
+            }
+        });
+        errorThread.setDaemon(true);
+        errorThread.start();
+    }
+    
+    /**
+     * 监控游戏进程
+     * Monitor game process
+     * 
+     * @param process 游戏进程 | Game process
+     */
+    private void monitorGameProcess(Process process) {
+        // 创建线程监控游戏进程
+        // Create thread to monitor game process
+        Thread monitorThread = new Thread(() -> {
+            try {
+                // 等待游戏进程结束
+                // Wait for game process to end
+                int exitCode = process.waitFor();
+                LogUtils.info("游戏已结束，退出代码 | Game ended, exit code: " + exitCode);
+                
+                // 如果启动器处于自动隐藏状态，则重新显示启动器
+                // If launcher is auto-hidden, show it again
+                if (LauncherCore.getInstance().getConfigManager().isAutoHideEnabled() && 
+                    !LauncherCore.getInstance().getConfigManager().isCloseAfterLaunch()) {
+                    LogUtils.info("游戏结束，重新显示启动器 | Game ended, showing launcher again");
+                    Platform.runLater(() -> {
+                        LauncherCore.getInstance().showWindow();
+                    });
+                }
+            } catch (InterruptedException e) {
+                LogUtils.error("监控游戏进程被中断 | Monitoring game process was interrupted", e);
+                Thread.currentThread().interrupt();
+            }
+        });
+        monitorThread.setDaemon(true);
+        monitorThread.start();
     }
 } 

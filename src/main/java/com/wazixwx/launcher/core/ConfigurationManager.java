@@ -48,6 +48,11 @@ public class ConfigurationManager {
     private static final String KEY_LAST_VERSION = "game.last_version";
     private static final String KEY_CUSTOM_JVM_ARGS = "game.custom_jvm_args";
     
+    // 窗口相关配置项
+    // Window related configuration items
+    private static final String KEY_AUTO_HIDE = "launcher.auto_hide";
+    private static final String KEY_CLOSE_AFTER_LAUNCH = "launcher.close_after_launch";
+    
     /**
      * 构造函数
      * Constructor
@@ -160,6 +165,18 @@ public class ConfigurationManager {
         
         if (!configMap.containsKey(KEY_CUSTOM_JVM_ARGS)) {
             configMap.put(KEY_CUSTOM_JVM_ARGS, "");
+        }
+        
+        // 设置启动器窗口自动隐藏默认值（默认启用）
+        // Set launcher auto hide default value (enabled by default)
+        if (!configMap.containsKey(KEY_AUTO_HIDE)) {
+            configMap.put(KEY_AUTO_HIDE, true);
+        }
+        
+        // 设置启动器窗口游戏启动后关闭默认值（默认禁用）
+        // Set launcher close after launch default value (disabled by default)
+        if (!configMap.containsKey(KEY_CLOSE_AFTER_LAUNCH)) {
+            configMap.put(KEY_CLOSE_AFTER_LAUNCH, false);
         }
     }
     
@@ -405,7 +422,7 @@ public class ConfigurationManager {
      * 获取自定义JVM参数
      * Get custom JVM arguments
      * 
-     * @return JVM参数 | JVM arguments
+     * @return 自定义JVM参数 | Custom JVM arguments
      */
     public String getCustomJvmArgs() {
         return (String) configMap.getOrDefault(KEY_CUSTOM_JVM_ARGS, "");
@@ -415,10 +432,49 @@ public class ConfigurationManager {
      * 设置自定义JVM参数
      * Set custom JVM arguments
      * 
-     * @param args JVM参数 | JVM arguments
+     * @param args 自定义JVM参数 | Custom JVM arguments
      */
     public void setCustomJvmArgs(String args) {
         configMap.put(KEY_CUSTOM_JVM_ARGS, args);
-        save();
+    }
+    
+    /**
+     * 获取启动器自动隐藏选项
+     * Get launcher auto hide option
+     * 
+     * @return 是否自动隐藏 | Whether to auto hide
+     */
+    public boolean isAutoHideEnabled() {
+        return (Boolean) configMap.getOrDefault(KEY_AUTO_HIDE, true);
+    }
+    
+    /**
+     * 设置启动器自动隐藏选项
+     * Set launcher auto hide option
+     * 
+     * @param enabled 是否启用 | Whether to enable
+     */
+    public void setAutoHideEnabled(boolean enabled) {
+        configMap.put(KEY_AUTO_HIDE, enabled);
+    }
+    
+    /**
+     * 获取启动游戏后关闭启动器选项
+     * Get close launcher after game launch option
+     * 
+     * @return 是否关闭 | Whether to close
+     */
+    public boolean isCloseAfterLaunch() {
+        return (Boolean) configMap.getOrDefault(KEY_CLOSE_AFTER_LAUNCH, false);
+    }
+    
+    /**
+     * 设置启动游戏后关闭启动器选项
+     * Set close launcher after game launch option
+     * 
+     * @param enabled 是否启用 | Whether to enable
+     */
+    public void setCloseAfterLaunch(boolean enabled) {
+        configMap.put(KEY_CLOSE_AFTER_LAUNCH, enabled);
     }
 } 

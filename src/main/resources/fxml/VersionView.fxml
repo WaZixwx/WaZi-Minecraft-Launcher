@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.wazixwx.launcher.ui.controller.VersionController"
+            stylesheets="/styles/main.css"
+            prefHeight="600.0" prefWidth="800.0">
+    
+    <!-- 顶部：标题和过滤器 -->
+    <!-- Top: Title and filters -->
+    <top>
+        <VBox spacing="10">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+            
+            <Label text="版本管理 | Version Management" styleClass="section-title">
+                <font>
+                    <Font name="System Bold" size="18.0"/>
+                </font>
+            </Label>
+            
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label text="显示类型 | Show type:"/>
+                <ComboBox fx:id="versionTypeFilter" prefWidth="150.0"/>
+                
+                <Separator orientation="VERTICAL" />
+                
+                <Label text="搜索 | Search:"/>
+                <TextField fx:id="searchField" promptText="输入版本号查找..." prefWidth="200.0"/>
+                
+                <Separator orientation="VERTICAL" />
+                
+                <CheckBox fx:id="showInstalledOnlyCheckbox" text="仅显示已安装 | Installed only"/>
+            </HBox>
+        </VBox>
+    </top>
+    
+    <!-- 中间：版本列表和详情 -->
+    <!-- Center: Version list and details -->
+    <center>
+        <SplitPane dividerPositions="0.4" prefHeight="160.0" prefWidth="200.0">
+            <TableView fx:id="versionTable" prefHeight="200.0" prefWidth="200.0">
+                <columns>
+                    <TableColumn fx:id="versionIdColumn" text="版本 | Version" prefWidth="100"/>
+                    <TableColumn fx:id="versionTypeColumn" text="类型 | Type" prefWidth="80"/>
+                    <TableColumn fx:id="versionReleaseDateColumn" text="发布日期 | Release Date" prefWidth="120"/>
+                    <TableColumn fx:id="versionInstalledColumn" text="已安装 | Installed" prefWidth="60"/>
+                </columns>
+            </TableView>
+            
+            <VBox spacing="10">
+                <padding>
+                    <Insets top="10" right="10" bottom="10" left="10"/>
+                </padding>
+                
+                <Label fx:id="versionTitleLabel" text="请选择版本 | Please select a version" styleClass="subsection-title">
+                    <font>
+                        <Font name="System Bold" size="16.0"/>
+                    </font>
+                </Label>
+                
+                <GridPane hgap="10" vgap="10">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="NEVER" minWidth="100.0" prefWidth="120.0"/>
+                        <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0"/>
+                    </columnConstraints>
+                    
+                    <Label text="版本ID | Version ID:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                    <Label fx:id="versionIdLabel" text="-" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                    
+                    <Label text="类型 | Type:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                    <Label fx:id="versionTypeLabel" text="-" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                    
+                    <Label text="发布日期 | Release Date:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                    <Label fx:id="versionReleaseDateLabel" text="-" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+                    
+                    <Label text="所需Java版本 | Required Java:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                    <Label fx:id="versionJavaLabel" text="-" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+                    
+                    <Label text="状态 | Status:" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+                    <Label fx:id="versionStatusLabel" text="-" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+                </GridPane>
+                
+                <ProgressBar fx:id="downloadProgressBar" prefWidth="Infinity" progress="0.0" visible="false" />
+                <Label fx:id="downloadStatusLabel" text="" visible="false" />
+                
+                <Region VBox.vgrow="ALWAYS" />
+                
+                <HBox spacing="10" alignment="CENTER_RIGHT">
+                    <Button fx:id="downloadButton" text="下载 | Download" styleClass="button, primary" disable="true" />
+                    <Button fx:id="validateButton" text="验证 | Validate" styleClass="button" disable="true" />
+                    <Button fx:id="startButton" text="启动游戏 | Launch Game" styleClass="start-button" disable="true" />
+                </HBox>
+            </VBox>
+        </SplitPane>
+    </center>
+    
+    <!-- 底部：状态和操作 -->
+    <!-- Bottom: Status and actions -->
+    <bottom>
+        <HBox spacing="10" alignment="CENTER_LEFT">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+            
+            <Label fx:id="statusLabel" text="就绪 | Ready" />
+            <Region HBox.hgrow="ALWAYS" />
+            <Button fx:id="refreshButton" text="刷新列表 | Refresh" />
+        </HBox>
+    </bottom>
+</BorderPane> 

@@ -33,6 +33,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.io.IOException;
 
 /**
  * 主窗口类
@@ -538,12 +539,40 @@ public class MainWindow {
     }
     
     /**
-     * 显示游戏页面
-     * Show play page
+     * 显示游戏启动页面
+     * Show game launch page
      */
-    private void showPlayPage() {
-        // TODO: 实现游戏启动页面
-        LogUtils.info("显示游戏启动页面");
+    public void showPlayPage() {
+        LogUtils.info("正在加载游戏启动页面 | Loading game launch page");
+        try {
+            // 从FXML加载页面
+            // Load page from FXML
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/PlayView.fxml"));
+            Parent root = loader.load();
+            
+            // 清除内容区域并添加新页面
+            // Clear content area and add new page
+            contentArea.getChildren().clear();
+            contentArea.getChildren().add(root);
+            
+            // 应用淡入动画效果
+            // Apply fade-in animation
+            AnimationUtils.fadeIn(root, 300);
+            
+            // 设置当前页面
+            // Set current page
+            currentPage = "play";
+            
+            // 更新导航栏选中状态
+            // Update navigation bar selection state
+            updateNavSelection(playButton);
+            
+        } catch (IOException e) {
+            LogUtils.error("加载游戏启动页面失败 | Failed to load game launch page", e);
+            showAlert(AlertType.ERROR, "错误 | Error", 
+                    "加载游戏启动页面失败 | Failed to load game launch page", 
+                    e.getMessage());
+        }
     }
     
     /**
@@ -551,8 +580,33 @@ public class MainWindow {
      * Show versions management page
      */
     private void showVersionsPage() {
-        // TODO: 实现版本管理页面
-        LogUtils.info("显示版本管理页面");
+        try {
+            LogUtils.info("显示版本管理页面 | Showing versions management page");
+            
+            // 加载版本管理页面FXML
+            // Load versions management page FXML
+            URL fxmlUrl = getClass().getResource("/fxml/VersionView.fxml");
+            if (fxmlUrl == null) {
+                LogUtils.error("无法找到版本管理页面FXML | Cannot find versions management page FXML");
+                return;
+            }
+            
+            // 加载FXML
+            // Load FXML
+            BorderPane versionsView = FXMLLoader.load(fxmlUrl);
+            
+            // 清除内容区域并添加版本管理页面
+            // Clear content area and add versions management page
+            contentArea.getChildren().clear();
+            contentArea.getChildren().add(versionsView);
+            
+            // 使用动画显示内容
+            // Show content with animation
+            AnimationUtils.fadeIn(versionsView, 300);
+            
+        } catch (Exception e) {
+            LogUtils.error("加载版本管理页面失败 | Failed to load versions management page", e);
+        }
     }
     
     /**
@@ -613,5 +667,13 @@ public class MainWindow {
      */
     public void show() {
         primaryStage.show();
+    }
+    
+    /**
+     * 隐藏窗口
+     * Hide window
+     */
+    public void hide() {
+        primaryStage.hide();
     }
 } 

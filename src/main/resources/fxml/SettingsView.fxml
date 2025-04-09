@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.wazixwx.launcher.ui.controller.SettingsController"
+            stylesheets="/styles/main.css"
+            prefHeight="600.0" prefWidth="800.0">
+    
+    <!-- 顶部：标题和状态 -->
+    <!-- Top: Title and status -->
+    <top>
+        <VBox spacing="10">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+            
+            <Label text="设置 | Settings" styleClass="section-title">
+                <font>
+                    <Font name="System Bold" size="18.0"/>
+                </font>
+            </Label>
+            
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label text="状态 | Status:" />
+                <Label fx:id="statusLabel" text="就绪 | Ready" />
+            </HBox>
+        </VBox>
+    </top>
+    
+    <!-- 中间：设置选项 -->
+    <!-- Center: Settings options -->
+    <center>
+        <ScrollPane fitToWidth="true" fitToHeight="true">
+            <VBox spacing="15">
+                <padding>
+                    <Insets top="10" right="10" bottom="10" left="10"/>
+                </padding>
+                
+                <!-- 通用设置 -->
+                <!-- General Settings -->
+                <TitledPane text="通用设置 | General Settings" expanded="true">
+                    <GridPane hgap="10" vgap="10">
+                        <columnConstraints>
+                            <ColumnConstraints hgrow="NEVER" minWidth="200" />
+                            <ColumnConstraints hgrow="ALWAYS" />
+                        </columnConstraints>
+                        
+                        <!-- 游戏目录 -->
+                        <!-- Game Directory -->
+                        <Label text="游戏目录 | Game Directory:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                        <HBox spacing="5" alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                            <TextField fx:id="gameDirectoryField" HBox.hgrow="ALWAYS" />
+                            <Button fx:id="browseGameDirectoryButton" text="浏览 | Browse" />
+                        </HBox>
+                        
+                        <!-- 语言设置 -->
+                        <!-- Language Settings -->
+                        <Label text="语言 | Language:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <ComboBox fx:id="languageComboBox" prefWidth="150" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        
+                        <!-- 启动设置 -->
+                        <!-- Launch Settings -->
+                        <Label text="启动选项 | Launch Options:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                        <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                            <CheckBox fx:id="closeAfterLaunchCheckBox" text="启动游戏后关闭启动器 | Close launcher after game launch" />
+                            <CheckBox fx:id="autoHideLauncherCheckBox" text="启动游戏后自动隐藏启动器 | Auto hide launcher after game launch" />
+                            <CheckBox fx:id="checkUpdatesCheckBox" text="启动时检查更新 | Check for updates at startup" selected="true" />
+                        </VBox>
+                    </GridPane>
+                </TitledPane>
+                
+                <!-- 下载设置 -->
+                <!-- Download Settings -->
+                <TitledPane text="下载设置 | Download Settings" expanded="false">
+                    <GridPane hgap="10" vgap="10">
+                        <columnConstraints>
+                            <ColumnConstraints hgrow="NEVER" minWidth="200" />
+                            <ColumnConstraints hgrow="ALWAYS" />
+                        </columnConstraints>
+                        
+                        <!-- 下载源 -->
+                        <!-- Download Source -->
+                        <Label text="下载源 | Download Source:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                        <ComboBox fx:id="downloadSourceComboBox" prefWidth="200" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                        
+                        <!-- 下载线程数 -->
+                        <!-- Download Threads -->
+                        <Label text="下载线程数 | Download Threads:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <HBox spacing="5" alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                            <Slider fx:id="downloadThreadsSlider" min="1" max="16" value="4" showTickLabels="true" 
+                                   showTickMarks="true" majorTickUnit="5" minorTickCount="4" snapToTicks="true" 
+                                   HBox.hgrow="ALWAYS" />
+                            <Label fx:id="downloadThreadsLabel" text="4" minWidth="30" />
+                        </HBox>
+                        
+                        <!-- 代理设置 -->
+                        <!-- Proxy Settings -->
+                        <Label text="代理设置 | Proxy Settings:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                        <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                            <CheckBox fx:id="useProxyCheckBox" text="使用代理 | Use Proxy" />
+                            <HBox spacing="5" alignment="CENTER_LEFT">
+                                <Label text="主机 | Host:" minWidth="60" />
+                                <TextField fx:id="proxyHostField" disable="${!useProxyCheckBox.selected}" HBox.hgrow="ALWAYS" />
+                                <Label text="端口 | Port:" minWidth="60" />
+                                <TextField fx:id="proxyPortField" prefWidth="60" disable="${!useProxyCheckBox.selected}" />
+                            </HBox>
+                        </VBox>
+                    </GridPane>
+                </TitledPane>
+                
+                <!-- 界面设置 -->
+                <!-- Interface Settings -->
+                <TitledPane text="界面设置 | Interface Settings" expanded="false">
+                    <GridPane hgap="10" vgap="10">
+                        <columnConstraints>
+                            <ColumnConstraints hgrow="NEVER" minWidth="200" />
+                            <ColumnConstraints hgrow="ALWAYS" />
+                        </columnConstraints>
+                        
+                        <!-- 主题设置 -->
+                        <!-- Theme Settings -->
+                        <Label text="主题 | Theme:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                        <ComboBox fx:id="themeComboBox" prefWidth="150" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                        
+                        <!-- 启动器不透明度 -->
+                        <!-- Launcher Opacity -->
+                        <Label text="启动器不透明度 | Launcher Opacity:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <HBox spacing="5" alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                            <Slider fx:id="opacitySlider" min="0.3" max="1.0" value="0.9" HBox.hgrow="ALWAYS" />
+                            <Label fx:id="opacityLabel" text="90%" minWidth="50" />
+                        </HBox>
+                        
+                        <!-- 动画效果 -->
+                        <!-- Animation Effects -->
+                        <Label text="动画效果 | Animation Effects:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                        <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                            <CheckBox fx:id="enableAnimationsCheckBox" text="启用动画效果 | Enable animations" selected="true" />
+                            <CheckBox fx:id="enableBlurEffectsCheckBox" text="启用毛玻璃效果 | Enable blur effects" selected="true" />
+                        </VBox>
+                    </GridPane>
+                </TitledPane>
+                
+                <!-- 高级设置 -->
+                <!-- Advanced Settings -->
+                <TitledPane text="高级设置 | Advanced Settings" expanded="false">
+                    <GridPane hgap="10" vgap="10">
+                        <columnConstraints>
+                            <ColumnConstraints hgrow="NEVER" minWidth="200" />
+                            <ColumnConstraints hgrow="ALWAYS" />
+                        </columnConstraints>
+                        
+                        <!-- 日志级别 -->
+                        <!-- Log Level -->
+                        <Label text="日志级别 | Log Level:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                        <ComboBox fx:id="logLevelComboBox" prefWidth="150" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                        
+                        <!-- 清理缓存 -->
+                        <!-- Clear Cache -->
+                        <Label text="缓存管理 | Cache Management:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <HBox spacing="10" alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                            <Button fx:id="clearCacheButton" text="清理缓存 | Clear Cache" />
+                            <Label fx:id="cacheInfoLabel" text="当前缓存大小: 0 MB | Current cache size: 0 MB" />
+                        </HBox>
+                        
+                        <!-- 重置设置 -->
+                        <!-- Reset Settings -->
+                        <Label text="重置设置 | Reset Settings:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                        <HBox spacing="10" alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                            <Button fx:id="resetSettingsButton" text="恢复默认设置 | Reset to Defaults" styleClass="danger-button" />
+                            <Label text="警告：此操作不可撤销 | Warning: This action cannot be undone" styleClass="warning-text" />
+                        </HBox>
+                    </GridPane>
+                </TitledPane>
+                
+                <!-- 关于 -->
+                <!-- About -->
+                <TitledPane text="关于 | About" expanded="false">
+                    <VBox spacing="10">
+                        <Label text="WaZi Minecraft Launcher" styleClass="section-title">
+                            <font>
+                                <Font name="System Bold" size="14.0"/>
+                            </font>
+                        </Label>
+                        <Label fx:id="versionLabel" text="版本 | Version: 1.0.0" />
+                        <Label text="开发者 | Developer: WaZixwx" />
+                        <Label text="许可证 | License: MIT" />
+                        <Hyperlink fx:id="websiteLink" text="官方网站 | Official Website: mc.wazixwx.com" />
+                        <HBox spacing="10" alignment="CENTER_LEFT">
+                            <Button fx:id="checkUpdateButton" text="检查更新 | Check for Updates" />
+                            <Hyperlink fx:id="reportIssueLink" text="报告问题 | Report Issue" />
+                        </HBox>
+                    </VBox>
+                </TitledPane>
+            </VBox>
+        </ScrollPane>
+    </center>
+    
+    <!-- 底部：操作按钮 -->
+    <!-- Bottom: Action buttons -->
+    <bottom>
+        <HBox spacing="10" alignment="CENTER_RIGHT">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+            
+            <Button fx:id="applyButton" text="应用 | Apply" />
+            <Button fx:id="saveButton" text="保存 | Save" styleClass="primary-button" />
+            <Button fx:id="cancelButton" text="取消 | Cancel" />
+        </HBox>
+    </bottom>
+</BorderPane> 

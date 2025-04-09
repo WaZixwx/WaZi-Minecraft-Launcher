@@ -232,6 +232,13 @@
     -fx-text-fill: #333333;
 }
 
+/* 内存信息标签样式 - Memory Info Label Styles */
+.memory-info-label {
+    -fx-font-size: 12px;
+    -fx-text-fill: #666666;
+    -fx-padding: 2px 0;
+}
+
 /* 进度条样式 */
 .progress-bar {
     -fx-background-color: rgba(255, 255, 255, 0.1);
@@ -248,57 +255,70 @@
     -fx-background-radius: 2px;
 }
 
-/* 卡片样式 */
+/* 警告文字样式 - Warning Text Styles */
+.warning-text {
+    -fx-text-fill: #e67e22;
+    -fx-font-style: italic;
+}
+
+/* 错误文字样式 - Error Text Styles */
+.error-text {
+    -fx-text-fill: #c0392b;
+    -fx-font-weight: bold;
+}
+
+/* 卡片样式 - Card Styles */
 .card {
-    -fx-background-color: rgba(255, 255, 255, 0.2);
+    -fx-background-color: rgba(255, 255, 255, 0.7);
     -fx-background-radius: 2px;
     -fx-padding: 15px;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0, 0, 2);
 }
 
-/* 分隔线样式 */
+/* 分割线样式 - Separator Styles */
 .separator {
     -fx-background-color: rgba(0, 0, 0, 0.1);
 }
 
-/* 复选框样式 */
+/* 复选框样式 - Checkbox Styles */
 .check-box {
     -fx-text-fill: #333333;
 }
 
 .check-box .box {
-    -fx-background-color: rgba(255, 255, 255, 0.2);
+    -fx-background-color: rgba(255, 255, 255, 0.7);
     -fx-background-radius: 2px;
-    -fx-border-color: rgba(0, 0, 0, 0.2);
     -fx-border-radius: 2px;
+    -fx-border-color: #CCCCCC;
+    -fx-border-width: 1px;
 }
 
 .check-box:selected .box {
-    -fx-background-color: #2196F3;
-    -fx-border-color: #2196F3;
+    -fx-background-color: #4CAF50;
+    -fx-border-color: #4CAF50;
 }
 
-/* 单选按钮样式 */
+/* 单选按钮样式 - Radio Button Styles */
 .radio-button {
     -fx-text-fill: #333333;
 }
 
 .radio-button .radio {
-    -fx-background-color: rgba(255, 255, 255, 0.2);
+    -fx-background-color: rgba(255, 255, 255, 0.7);
     -fx-background-radius: 50%;
-    -fx-border-color: rgba(0, 0, 0, 0.2);
     -fx-border-radius: 50%;
+    -fx-border-color: #CCCCCC;
+    -fx-border-width: 1px;
 }
 
 .radio-button:selected .radio {
-    -fx-background-color: #2196F3;
-    -fx-border-color: #2196F3;
+    -fx-background-color: #4CAF50;
+    -fx-border-color: #4CAF50;
 }
 
-/* 组合框样式 */
+/* 下拉框样式 - ComboBox Styles */
 .combo-box {
-    -fx-background-color: rgba(255, 255, 255, 0.2);
-    -fx-background-radius: 2px;
+    -fx-background-color: rgba(255, 255, 255, 0.7);
 }
 
 .combo-box .arrow-button {
@@ -311,15 +331,41 @@
 
 .combo-box .list-view {
     -fx-background-color: rgba(255, 255, 255, 0.9);
-    -fx-background-radius: 2px;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0, 0, 2);
 }
 
-/* 工具提示样式 */
+/* 提示框样式 - Tooltip Styles */
 .tooltip {
-    -fx-background-color: rgba(0, 0, 0, 0.8);
+    -fx-background-color: rgba(45, 45, 45, 0.9);
     -fx-text-fill: white;
     -fx-background-radius: 2px;
-    -fx-padding: 5px;
     -fx-font-size: 12px;
+}
+
+/* 滑块样式 - Slider Styles */
+.slider {
+    -fx-pref-height: 30px;
+}
+
+.slider .track {
+    -fx-background-color: rgba(200, 200, 200, 0.8);
+    -fx-background-radius: 2px;
+    -fx-pref-height: 6px;
+}
+
+.slider .thumb {
+    -fx-background-color: #4CAF50;
+    -fx-background-radius: 50%;
+    -fx-pref-height: 16px;
+    -fx-pref-width: 16px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 4, 0, 0, 1);
+}
+
+.slider .thumb:hover {
+    -fx-background-color: #45a049;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 6, 0, 0, 2);
+}
+
+.slider .thumb:pressed {
+    -fx-background-color: #3d8b40;
 } 

@@ -5,6 +5,7 @@ import com.wazixwx.launcher.service.MinecraftVersionService;
 import com.wazixwx.launcher.service.SkinService;
 import com.wazixwx.launcher.service.VersionManager;
 import com.wazixwx.launcher.service.ModService;
+import com.wazixwx.launcher.ui.MainWindow;
 import com.wazixwx.launcher.utils.LogUtils;
 import java.util.concurrent.CompletableFuture;
 
@@ -26,6 +27,7 @@ public class LauncherCore {
     private final SkinService skinService;
     private final MinecraftVersionService minecraftVersionService;
     private final ModService modService;
+    private MainWindow mainWindow; // 主窗口引用 | Main window reference
     
     /**
      * 私有构造函数
@@ -113,6 +115,49 @@ public class LauncherCore {
                 throw e;
             }
         });
+    }
+    
+    /**
+     * 设置主窗口引用
+     * Set main window reference
+     * 
+     * @param mainWindow 主窗口实例 | Main window instance
+     */
+    public void setMainWindow(MainWindow mainWindow) {
+        this.mainWindow = mainWindow;
+        LogUtils.info("主窗口引用已设置 | Main window reference set");
+    }
+    
+    /**
+     * 获取主窗口引用
+     * Get main window reference
+     * 
+     * @return MainWindow实例 | MainWindow instance
+     */
+    public MainWindow getMainWindow() {
+        return mainWindow;
+    }
+    
+    /**
+     * 隐藏启动器窗口
+     * Hide launcher window
+     */
+    public void hideWindow() {
+        if (mainWindow != null) {
+            LogUtils.info("正在隐藏启动器窗口 | Hiding launcher window");
+            mainWindow.hide();
+        }
+    }
+    
+    /**
+     * 显示启动器窗口
+     * Show launcher window
+     */
+    public void showWindow() {
+        if (mainWindow != null) {
+            LogUtils.info("正在显示启动器窗口 | Showing launcher window");
+            mainWindow.show();
+        }
     }
     
     /**
