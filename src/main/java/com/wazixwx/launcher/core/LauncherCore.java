@@ -1,8 +1,10 @@
 package com.wazixwx.launcher.core;
 
 import com.wazixwx.launcher.service.AccountService;
+import com.wazixwx.launcher.service.MinecraftVersionService;
 import com.wazixwx.launcher.service.SkinService;
 import com.wazixwx.launcher.service.VersionManager;
+import com.wazixwx.launcher.service.ModService;
 import com.wazixwx.launcher.utils.LogUtils;
 import java.util.concurrent.CompletableFuture;
 
@@ -22,6 +24,8 @@ public class LauncherCore {
     private final VersionManager versionManager;
     private final AccountService accountService;
     private final SkinService skinService;
+    private final MinecraftVersionService minecraftVersionService;
+    private final ModService modService;
     
     /**
      * 私有构造函数
@@ -29,6 +33,10 @@ public class LauncherCore {
      */
     private LauncherCore() {
         this.configManager = new ConfigurationManager();
+        
+        // 初始化Minecraft版本服务
+        // Initialize Minecraft version service
+        this.minecraftVersionService = new MinecraftVersionService();
         
         // 使用配置管理器的Minecraft目录初始化版本管理器
         // Initialize version manager with Minecraft directory from configuration manager
@@ -42,6 +50,10 @@ public class LauncherCore {
         // 初始化皮肤服务
         // Initialize skin service
         this.skinService = new SkinService();
+        
+        // 初始化模组服务
+        // Initialize mod service
+        this.modService = new ModService();
     }
     
     /**
@@ -141,5 +153,25 @@ public class LauncherCore {
      */
     public SkinService getSkinService() {
         return skinService;
+    }
+    
+    /**
+     * 获取Minecraft版本服务
+     * Get the Minecraft version service
+     * 
+     * @return MinecraftVersionService实例 | MinecraftVersionService instance
+     */
+    public MinecraftVersionService getMinecraftVersionService() {
+        return minecraftVersionService;
+    }
+    
+    /**
+     * 获取模组服务
+     * Get the mod service
+     * 
+     * @return ModService实例 | ModService instance
+     */
+    public ModService getModService() {
+        return modService;
     }
 } 

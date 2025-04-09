@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane styleClass="content-pane" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wazixwx.launcher.ui.controller.ModController">
+   <top>
+      <VBox spacing="10.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label styleClass="page-title" text="模组管理 | Mod Management">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <HBox alignment="CENTER_LEFT" spacing="10.0">
+               <children>
+                  <Label text="Minecraft版本 | Minecraft Version:" />
+                  <ComboBox fx:id="versionFilterComboBox" prefWidth="150.0" />
+                  <Label text="模组加载器 | Mod Loader:" />
+                  <ComboBox fx:id="loaderFilterComboBox" prefWidth="150.0" />
+               </children>
+            </HBox>
+         </children>
+         <BorderPane.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </BorderPane.margin>
+      </VBox>
+   </top>
+   <center>
+      <SplitPane dividerPositions="0.7" BorderPane.alignment="CENTER">
+         <items>
+            <BorderPane>
+               <center>
+                  <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" BorderPane.alignment="CENTER">
+                     <items>
+                        <VBox spacing="5.0">
+                           <children>
+                              <HBox alignment="CENTER_LEFT" spacing="5.0">
+                                 <children>
+                                    <Label styleClass="section-title" text="已安装模组 | Installed Mods" />
+                                    <Label fx:id="modCountLabel" text="共 0 个已安装模组 | 0 installed mods in total" />
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <TableView fx:id="installedModsTable" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                                <columns>
+                                  <TableColumn fx:id="installedNameColumn" prefWidth="150.0" text="名称 | Name" />
+                                  <TableColumn fx:id="installedVersionColumn" prefWidth="100.0" text="版本 | Version" />
+                                    <TableColumn fx:id="installedAuthorColumn" prefWidth="120.0" text="作者 | Author" />
+                                    <TableColumn fx:id="installedLoaderColumn" prefWidth="100.0" text="加载器 | Loader" />
+                                    <TableColumn fx:id="installedTypeColumn" prefWidth="100.0" text="类型 | Type" />
+                                </columns>
+                              </TableView>
+                           </children>
+                           <padding>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </padding>
+                        </VBox>
+                        <VBox spacing="5.0">
+                           <children>
+                              <HBox alignment="CENTER_LEFT" spacing="5.0">
+                                 <children>
+                                    <Label styleClass="section-title" text="已启用模组 | Enabled Mods" />
+                                    <Label fx:id="enabledCountLabel" text="共 0 个已启用模组 | 0 enabled mods in total" />
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <TableView fx:id="enabledModsTable" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                                 <columns>
+                                    <TableColumn fx:id="enabledNameColumn" prefWidth="150.0" text="名称 | Name" />
+                                    <TableColumn fx:id="enabledVersionColumn" prefWidth="100.0" text="版本 | Version" />
+                                    <TableColumn fx:id="enabledAuthorColumn" prefWidth="120.0" text="作者 | Author" />
+                                    <TableColumn fx:id="enabledLoaderColumn" prefWidth="100.0" text="加载器 | Loader" />
+                                    <TableColumn fx:id="enabledTypeColumn" prefWidth="100.0" text="类型 | Type" />
+                                 </columns>
+                              </TableView>
+                           </children>
+                           <padding>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </padding>
+                        </VBox>
+                     </items>
+                  </SplitPane>
+               </center>
+               <bottom>
+                  <HBox alignment="CENTER" spacing="10.0" BorderPane.alignment="CENTER">
+                     <BorderPane.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </BorderPane.margin>
+                     <children>
+                        <Button fx:id="installButton" mnemonicParsing="false" styleClass="primary-button" text="安装新模组 | Install New Mod" />
+                        <Button fx:id="uninstallButton" mnemonicParsing="false" styleClass="danger-button" text="卸载选中模组 | Uninstall Selected Mod" />
+                        <Button fx:id="enableButton" mnemonicParsing="false" styleClass="success-button" text="启用模组 | Enable Mod" />
+                        <Button fx:id="disableButton" mnemonicParsing="false" styleClass="warning-button" text="禁用模组 | Disable Mod" />
+                     </children>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                  </HBox>
+               </bottom>
+            </BorderPane>
+            <VBox fx:id="detailsBox" prefHeight="200.0" prefWidth="100.0" spacing="10.0" visible="false">
+               <children>
+                  <Label styleClass="section-title" text="模组详情 | Mod Details">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <ScrollPane fitToHeight="true" fitToWidth="true" VBox.vgrow="ALWAYS">
+                     <content>
+                        <AnchorPane>
+                           <children>
+                              <TextArea fx:id="modDescriptionArea" editable="false" styleClass="details-area" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </ScrollPane>
+               </children>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </VBox>
+         </items>
+      </SplitPane>
+   </center>
+</BorderPane> 

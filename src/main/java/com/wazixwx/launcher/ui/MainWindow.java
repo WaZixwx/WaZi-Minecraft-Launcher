@@ -26,6 +26,8 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
+import javafx.fxml.FXMLLoader;
+import java.net.URL;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -558,8 +560,33 @@ public class MainWindow {
      * Show mods management page
      */
     private void showModsPage() {
-        // TODO: 实现模组管理页面
-        LogUtils.info("显示模组管理页面");
+        try {
+            LogUtils.info("显示模组管理页面 | Showing mods management page");
+            
+            // 加载模组管理页面FXML
+            // Load mods management page FXML
+            URL fxmlUrl = getClass().getResource("/fxml/ModView.fxml");
+            if (fxmlUrl == null) {
+                LogUtils.error("无法找到模组管理页面FXML | Cannot find mods management page FXML");
+                return;
+            }
+            
+            // 加载FXML
+            // Load FXML
+            BorderPane modsView = FXMLLoader.load(fxmlUrl);
+            
+            // 清除内容区域并添加模组管理页面
+            // Clear content area and add mods management page
+            contentArea.getChildren().clear();
+            contentArea.getChildren().add(modsView);
+            
+            // 使用动画显示内容
+            // Show content with animation
+            AnimationUtils.fadeIn(modsView, 300);
+            
+        } catch (Exception e) {
+            LogUtils.error("加载模组管理页面失败 | Failed to load mods management page", e);
+        }
     }
     
     /**
