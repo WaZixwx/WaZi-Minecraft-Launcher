@@ -75,7 +75,7 @@ java {
 
 compileJava {
     options.encoding = 'UTF-8'
-    options.release = 17 // 兼容性发布版本
+    options.release = 17 // 兼容性发布版本 | Compatibility release version
 }
 
 tasks.withType(JavaCompile) {
