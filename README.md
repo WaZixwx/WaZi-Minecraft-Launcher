@@ -173,7 +173,7 @@ cd WaZi-Minecraft-Launcher
 ./gradlew run
 ```
 
-4. 国内开发者请在 https://mirrors.cloud.tencent.com/gradle/gradle-7.6-all.zip 镜像源下载Gradle
+4. 国内开发者请在 https://mirrors.cloud.tencent.com/gradle/gradle-7.6-bin.zip 镜像源下载Gradle
 
 
 ### 项目结构 | Project Structure
