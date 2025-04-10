@@ -8,10 +8,12 @@ out/
 # gradle目录整体不应被忽略，只忽略特定文件 | Don't ignore entire gradle directory
 # 但忽略其他gradle目录内容 | But ignore other gradle contents
 gradle/*
-# 保留gradle-wrapper目录和jar | Allow gradle-wrapper directory and jar
+# 保留 gradle-wrapper目录和jar | Allow gradle-wrapper directory and jar
 !gradle/wrapper/
 !gradle/wrapper/gradle-wrapper.jar
 !gradle/wrapper/gradle-wrapper.properties
+#保留 gradle/gradle-8.6-bin.zip
+!gradle/gradle-8.6-bin.zip
 
 # IDE 相关 | IDE Related
 ## IntelliJ IDEA
