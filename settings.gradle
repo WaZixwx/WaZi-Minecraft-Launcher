@@ -2,9 +2,8 @@
 pluginManagement {
     repositories {
         gradlePluginPortal()
-        maven { url 'https://repo.spring.io/plugins-release' }
-        maven { url 'https://maven.aliyun.com/repository/public/' }
         maven { url 'https://mirrors.cloud.tencent.com/gradle/' }
+        maven { url 'https://services.gradle.org/distributions/' }
         google()
         mavenCentral()
     }

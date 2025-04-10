@@ -10,8 +10,7 @@ version = '1.0.0'
 
 repositories {
     maven { url 'https://mirrors.cloud.tencent.com/gradle/' }
-    maven { url 'https://maven.aliyun.com/repository/public/' }
-    maven { url 'https://repo.huaweicloud.com/repository/maven/' }
+    maven { url 'https://services.gradle.org/distributions/' }
     mavenCentral()
     gradlePluginPortal()
 }

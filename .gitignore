@@ -12,8 +12,6 @@ gradle/*
 !gradle/wrapper/
 !gradle/wrapper/gradle-wrapper.jar
 !gradle/wrapper/gradle-wrapper.properties
-#保留 gradle/gradle-8.6-bin.zip
-!gradle/gradle-8.6-bin.zip
 
 # IDE 相关 | IDE Related
 ## IntelliJ IDEA
@@ -58,8 +56,6 @@ logs/
 *.rar
 *.tar
 *.7z
-# 排除Gradle Wrapper JAR | Exclude Gradle Wrapper JAR
-!gradle/wrapper/gradle-wrapper.jar
 
 # JVM崩溃日志 | Virtual Machine Crash Logs
 hs_err_pid*
