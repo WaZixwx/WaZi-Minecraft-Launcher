@@ -173,6 +173,9 @@ cd WaZi-Minecraft-Launcher
 ./gradlew run
 ```
 
+4. 国内开发者请在 https://mirrors.cloud.tencent.com/gradle/gradle-8.6-bin.zip 镜像源下载Gradle-8.6-bin.zip
+
+
 ### 项目结构 | Project Structure
 
 ```
