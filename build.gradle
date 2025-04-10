@@ -69,13 +69,13 @@ test {
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
+        languageVersion = JavaLanguageVersion.of(21) // 使用JDK21进行开发 | Using JDK21 for development
     }
 }
 
 compileJava {
     options.encoding = 'UTF-8'
-    options.release = 17 // 兼容性发布版本 | Compatibility release version
+    options.release = 21 // 将兼容性发布版本更新为JDK21 | Updated compatibility release version to JDK21
 }
 
 tasks.withType(JavaCompile) {
