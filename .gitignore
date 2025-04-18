@@ -1,0 +1,117 @@
+# -*- mode: gitignore -*-
+# ==========================
+# 项目特定
+# ==========================
+
+# 编译后的类文件
+*.class
+
+# Minecraft 版本文件
+.minecraft/
+
+# 日志文件
+*.log
+
+# BlueJ 文件
+*.ctxt
+
+# Java 移动工具 (J2ME)
+.mtj.tmp/
+
+# 包文件
+*.jar
+!gradle/wrapper/gradle-wrapper.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# 虚拟机崩溃日志, 参见 http://www.java.com/en/download/help/error_hotspot.xml
+hserr_pid*
+
+# ==========================
+# 构建工具
+# ==========================
+
+# Gradle
+.gradle
+build/
+
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+# ==========================
+# 开发环境
+# ==========================
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.ipr
+*.iws
+out/
+
+# Eclipse
+.classpath
+.project
+.settings/
+bin/
+
+# NetBeans
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+# VS Code
+.vscode/
+
+# ==========================
+# 操作系统文件
+# ==========================
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Linux
+*~
+
+# ==========================
+# 运行时数据
+# ==========================
+
+# 应用特定文件
+logs/
+tmp/
+
+# ==========================
+# 其他
+# ==========================
+
+# 环境变量文件
+.env
+
+# 敏感配置文件
+*.pem
+*.key
+*.cer 
