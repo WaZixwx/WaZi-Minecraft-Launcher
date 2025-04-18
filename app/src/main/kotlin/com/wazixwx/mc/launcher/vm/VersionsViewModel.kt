@@ -278,7 +278,7 @@ class VersionsViewModel {
             return // 阻止启动新下载
         }
 
-        // --- 开始下载准备阶段 --- 
+        // --- 开始下载准备阶段 ---
         println("ViewModel: Starting preparation to download version ${version.id}...")
         // 更新 UI 状态 (需要在 Main 线程)
         withContext(Dispatchers.Main) {
@@ -290,54 +290,68 @@ class VersionsViewModel {
                 downloadProgress = 0f // 初始化进度为 0%
             )
         }
-        
+
         // 不再需要内部启动协程，直接在当前协程上下文中执行
         // 使用 withContext 切换线程执行耗时操作
-        var details: VersionDetails? = null // 声明变量存储版本详情
         try {
-            // --- 步骤 1: 获取版本详细信息 (IO) --- 
+            // --- 步骤 1: 获取版本详细信息 (IO) ---
             val url = version.manifestUrl
             if (url == null) {
                 throw Exception("Details URL missing for version ${version.id}.")
             }
-            details = withContext(Dispatchers.IO) { 
-                println("ViewModel: Fetching details for version ${version.id} to parse download tasks (IO)...")
-                DownloadManager.parseDownloadTasks(details)
+            // 先获取 VersionDetails，并检查是否为空
+            val fetchedDetails = withContext(Dispatchers.IO) {
+                println("ViewModel: Fetching details for version ${version.id} (IO)...") // 修正日志信息
+                MojangApiService.getVersionDetails(url) // <<< 修正：调用 getVersionDetails
             }
-            if (details == null) {
+            if (fetchedDetails == null) { // <<< 修正：检查 fetchedDetails
                 throw Exception("Failed to fetch details for version ${version.id}, cannot determine download content.")
             }
+            // 到这里，fetchedDetails 肯定不为空
 
-            // --- 步骤 2: 解析下载任务 (Default) --- 
+            // --- 步骤 2: 解析下载任务 (Default) ---
+            println("ViewModel: Parsing download tasks for ${fetchedDetails.id} (Default)...") // <<< 修正：使用 fetchedDetails
+            // 使用获取到的 fetchedDetails 来解析任务列表
+            val initialDownloadTasks = withContext(Dispatchers.Default) {
+                DownloadManager.parseDownloadTasks(fetchedDetails) // <<< 修正：传入 fetchedDetails
+            }
+            if (initialDownloadTasks.isEmpty()) {
+                // 如果初始任务列表为空 (可能只发生在版本json有问题时)，也应该处理
+                throw Exception("Parsed download task list is empty for version ${fetchedDetails.id}.")
+            }
+
+            // --- 步骤 3: 执行下载任务 (IO + Default for progress) ---
             val standardGameDir = File(System.getProperty("user.home"), ".wzs_minecraft_launcher/minecraft")
-            val downloadTasks = withContext(Dispatchers.Default) { 
-                println("ViewModel: Parsing download tasks for ${details.id} (Default)...")
-                DownloadManager.executeDownloadTasks(
-                    tasks = downloadTasks,
-                    gameDir = standardGameDir, 
-                    client = MojangApiService.getClient(),
-                    progressCallback = { progress ->
-                        // 进度回调内部切换到 Main 线程更新 UI
-                        // 使用 launch 而不是 withContext，因为回调可能频繁触发，避免阻塞 IO 线程
-                        // viewModelScope 需确保其 context 包含 Main dispatcher
-                        viewModelScope.launch(Dispatchers.Main.immediate) { // 使用 immediate 尝试立即执行
+            // 执行下载，传入解析好的 initialDownloadTasks
+            val downloadSuccess = DownloadManager.executeDownloadTasks( // <<< 修正：直接调用，结果赋给新变量
+                tasks = initialDownloadTasks, // <<< 修正：传入初始任务列表
+                gameDir = standardGameDir,
+                client = MojangApiService.getClient(),
+                progressCallback = { progress ->
+                    // 进度回调内部切换到 Main 线程更新 UI
+                    viewModelScope.launch(Dispatchers.Main.immediate) { // 使用 immediate 尝试立即执行
+                        // 检查一下，确保只有当下载还在进行时才更新进度 (避免下载结束后意外更新)
+                        if (uiState.downloadingVersionId == version.id) {
                            uiState = uiState.copy(downloadProgress = progress)
                         }
                     }
-                )
-            }
+                }
+            )
 
-            // --- 步骤 4: 处理下载结果 (Main) --- 
+
+            // --- 步骤 4: 处理下载结果 (Main) ---
             withContext(Dispatchers.Main) {
-                if (downloadTasks) {
+                if (downloadSuccess) { // <<< 修正：检查下载执行结果
                     println("ViewModel: All files for version ${version.id} downloaded successfully.")
+                    // 更新版本列表中的状态
                     val updatedVersions = uiState.versions.map {
                         if (it.id == version.id) it.copy(isInstalled = true) else it
                     }
                     uiState = uiState.copy(
                         downloadingVersionId = null,
                         downloadProgress = null,
-                        versions = updatedVersions
+                        versions = updatedVersions,
+                        error = null // 清除可能存在的旧错误
                     )
                 } else {
                     println("ViewModel: Download failed for version ${version.id}.")
@@ -358,7 +372,7 @@ class VersionsViewModel {
                 uiState = uiState.copy(
                     downloadingVersionId = null, // 清除下载状态
                     downloadProgress = null, // 清除进度
-                    error = "Download preparation failed: ${e.message}"
+                    error = "Download failed: ${e.message}" // <<< 修正：提供更具体的错误信息
                 )
             }
         }
